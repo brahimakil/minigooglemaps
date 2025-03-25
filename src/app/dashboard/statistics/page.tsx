@@ -87,12 +87,41 @@ export default function StatisticsPage() {
       try {
         setLoading(true);
         
-        // Fetch basic counts
-        const usersSnapshot = await getDocs(collection(db, 'users'));
-        const activitiesSnapshot = await getDocs(collection(db, 'activities'));
-        const locationsSnapshot = await getDocs(collection(db, 'locations'));
-        const activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
+        // Wrap all Firebase calls in try/catch blocks
+        let usersSnapshot;
+        let activitiesSnapshot;
+        let locationsSnapshot;
+        let activityTypesSnapshot;
         
+        try {
+          usersSnapshot = await getDocs(collection(db, 'users'));
+        } catch (error) {
+          console.error('Error fetching users:', error);
+          usersSnapshot = { size: 0, docs: [] };
+        }
+        
+        try {
+          activitiesSnapshot = await getDocs(collection(db, 'activities'));
+        } catch (error) {
+          console.error('Error fetching activities:', error);
+          activitiesSnapshot = { size: 0, docs: [], forEach: () => {} };
+        }
+        
+        try {
+          locationsSnapshot = await getDocs(collection(db, 'locations'));
+        } catch (error) {
+          console.error('Error fetching locations:', error);
+          locationsSnapshot = { size: 0, docs: [], forEach: () => {} };
+        }
+        
+        try {
+          activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
+        } catch (error) {
+          console.error('Error fetching activity types:', error);
+          activityTypesSnapshot = { size: 0, docs: [], forEach: () => {} };
+        }
+        
+        // Continue with the rest of the function...
         setUserCount(usersSnapshot.size);
         setActivityCount(activitiesSnapshot.size);
         setLocationCount(locationsSnapshot.size);

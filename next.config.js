@@ -15,6 +15,18 @@ const nextConfig = {
       };
     }
     
+    // Add transpilation for chart.js
+    config.module.rules.push({
+      test: /node_modules\/chart\.js/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-proposal-private-property-in-object']
+        }
+      }
+    });
+    
     return config;
   },
   // Use Node.js polyfills for fetch API
