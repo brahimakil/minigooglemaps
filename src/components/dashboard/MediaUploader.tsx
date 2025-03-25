@@ -6,9 +6,10 @@ import { XMarkIcon, PhotoIcon, FilmIcon } from '@/components/icons';
 interface MediaUploaderProps {
   existingMedia?: string[];
   onMediaChange: (mediaUrls: string[]) => void;
+  folderPath?: string;
 }
 
-export default function MediaUploader({ existingMedia = [], onMediaChange }: MediaUploaderProps) {
+export default function MediaUploader({ existingMedia = [], onMediaChange, folderPath }: MediaUploaderProps) {
   const [mediaUrls, setMediaUrls] = useState<string[]>(existingMedia);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);

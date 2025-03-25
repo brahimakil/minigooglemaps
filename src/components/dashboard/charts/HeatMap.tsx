@@ -14,103 +14,96 @@ export default function HeatMap({ data }: HeatMapProps) {
   const chartInstance = useRef<ChartType | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
-    
     // Import Chart.js dynamically on the client side
     const initChart = async () => {
-      if (!chartRef.current || !isMounted) return;
+      if (!chartRef.current) return;
 
-      try {
-        // Dynamically import Chart.js
-        const { Chart, registerables } = await import('chart.js');
-        Chart.register(...registerables);
+      // Dynamically import Chart.js
+      const { Chart, registerables } = await import('chart.js');
+      Chart.register(...registerables);
 
-        // Destroy existing chart
-        if (chartInstance.current) {
-          chartInstance.current.destroy();
+      // Destroy existing chart
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+
+      const ctx = chartRef.current.getContext('2d');
+      if (!ctx) return;
+
+      // Get unique x and y values
+      const xValues = Array.from(new Set(data.map(item => item.x)));
+      const yValues = Array.from(new Set(data.map(item => item.y)));
+
+      // Create a 2D array for the heatmap data
+      const heatmapData = Array(yValues.length).fill(0).map(() => Array(xValues.length).fill(0));
+
+      // Fill the 2D array with values
+      data.forEach(item => {
+        const xIndex = xValues.indexOf(item.x);
+        const yIndex = yValues.indexOf(item.y);
+        if (xIndex !== -1 && yIndex !== -1) {
+          heatmapData[yIndex][xIndex] = item.value;
         }
+      });
 
-        const ctx = chartRef.current.getContext('2d');
-        if (!ctx) return;
+      // Create datasets for the heatmap
+      const datasets = yValues.map((y, yIndex) => ({
+        label: y,
+        data: heatmapData[yIndex],
+        backgroundColor: getColorScale(heatmapData[yIndex]),
+        borderColor: 'rgba(255, 255, 255, 0.5)',
+        borderWidth: 1,
+        barPercentage: 1,
+        categoryPercentage: 1,
+      }));
 
-        // Get unique x and y values
-        const xValues = Array.from(new Set(data.map(item => item.x)));
-        const yValues = Array.from(new Set(data.map(item => item.y)));
-
-        // Create a 2D array for the heatmap data
-        const heatmapData = Array(yValues.length).fill(0).map(() => Array(xValues.length).fill(0));
-
-        // Fill the 2D array with values
-        data.forEach(item => {
-          const xIndex = xValues.indexOf(item.x);
-          const yIndex = yValues.indexOf(item.y);
-          if (xIndex !== -1 && yIndex !== -1) {
-            heatmapData[yIndex][xIndex] = item.value;
-          }
-        });
-
-        // Create datasets for the heatmap
-        const datasets = yValues.map((y, yIndex) => ({
-          label: y,
-          data: heatmapData[yIndex],
-          backgroundColor: getColorScale(heatmapData[yIndex]),
-          borderColor: 'rgba(255, 255, 255, 0.5)',
-          borderWidth: 1,
-          barPercentage: 1,
-          categoryPercentage: 1,
-        }));
-
-        chartInstance.current = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: xValues,
-            datasets,
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: 'y',
-            scales: {
-              x: {
-                stacked: true,
-                grid: {
-                  display: false,
-                },
-              },
-              y: {
-                stacked: true,
-                grid: {
-                  display: false,
-                },
-              },
-            },
-            plugins: {
-              legend: {
+      chartInstance.current = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: xValues,
+          datasets,
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          scales: {
+            x: {
+              stacked: true,
+              grid: {
                 display: false,
               },
-              tooltip: {
-                callbacks: {
-                  title: function(tooltipItems) {
-                    const item = tooltipItems[0];
-                    return `${yValues[item.datasetIndex]} - ${xValues[item.dataIndex]}`;
-                  },
-                  label: function(context) {
-                    return `Value: ${context.raw}`;
-                  }
-                }
-              }
+            },
+            y: {
+              stacked: true,
+              grid: {
+                display: false,
+              },
             },
           },
-        });
-      } catch (error) {
-        console.error('Error initializing heatmap chart:', error);
-      }
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                title: function(tooltipItems) {
+                  const item = tooltipItems[0];
+                  return `${yValues[item.datasetIndex]} - ${xValues[item.dataIndex]}`;
+                },
+                label: function(context) {
+                  return `Value: ${context.raw}`;
+                }
+              }
+            }
+          },
+        },
+      });
     };
 
     initChart();
 
     return () => {
-      isMounted = false;
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }

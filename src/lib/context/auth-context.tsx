@@ -1,37 +1,67 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { 
+  User, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
 
-interface AuthContextProps {
+// Define the shape of the context
+interface AuthContextType {
   user: User | null;
   loading: boolean;
+  login: (email: string, password: string) => Promise<User>;
+  signup: (email: string, password: string) => Promise<User>;
+  logout: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+// Create the context with a default value
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Create a provider component
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      setUser(authUser);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
       setLoading(false);
     });
 
-    // Cleanup subscription
     return () => unsubscribe();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const login = async (email: string, password: string) => {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    return result.user;
+  };
+
+  const signup = async (email: string, password: string) => {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    return result.user;
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+  };
+
+  const value = {
+    user,
+    loading,
+    login,
+    signup,
+    logout
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+// Create a hook to use the auth context
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

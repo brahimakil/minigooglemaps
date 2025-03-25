@@ -1,103 +1,109 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
+import Chart from 'chart.js/auto';
 
 // Define types for Chart.js
 type ChartType = any;
+type ChartData = {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string;
+    borderColor: string;
+    borderWidth: number;
+    borderRadius: number;
+  }[];
+};
+
+interface DataItem {
+  [key: string]: string | number;
+  name: string;
+  value: number;
+}
 
 interface BarChartProps {
-  data: { name: string; value: number }[];
-  xKey: string;
-  yKey: string;
+  data: DataItem[];
+  xKey?: string;
+  yKey?: string;
+  title?: string;
   color?: string;
 }
 
-export default function BarChart({ data, xKey, yKey, color = '#6366F1' }: BarChartProps) {
+export default function BarChart({ 
+  data, 
+  xKey = 'name', 
+  yKey = 'value', 
+  title = 'Chart', 
+  color = '#4F46E5' 
+}: BarChartProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstance = useRef<ChartType | null>(null);
+  const chartInstance = useRef<Chart | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
-    
-    // Import Chart.js dynamically on the client side
-    const initChart = async () => {
-      if (!chartRef.current || !isMounted) return;
+    if (!chartRef.current || !data || data.length === 0) return;
 
-      try {
-        // Dynamically import Chart.js
-        const { Chart, registerables } = await import('chart.js');
-        Chart.register(...registerables);
+    // Destroy previous chart if it exists
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
 
-        // Destroy existing chart
-        if (chartInstance.current) {
-          chartInstance.current.destroy();
-        }
+    const ctx = chartRef.current.getContext('2d');
+    if (!ctx) return;
 
-        const ctx = chartRef.current.getContext('2d');
-        if (!ctx) return;
-
-        chartInstance.current = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: data.map(item => item[xKey]),
-            datasets: [
-              {
-                label: 'Count',
-                data: data.map(item => item[yKey]),
-                backgroundColor: color,
-                borderColor: color,
-                borderWidth: 1,
-                borderRadius: 4,
-              },
-            ],
+    // Create new chart
+    chartInstance.current = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.map(item => String(item[xKey])),
+        datasets: [
+          {
+            label: 'Count',
+            data: data.map(item => Number(item[yKey])),
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 1,
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
-              },
-              tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                padding: 10,
-                titleFont: {
-                  size: 14,
-                },
-                bodyFont: {
-                  size: 14,
-                },
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                grid: {
-                  color: 'rgba(0, 0, 0, 0.05)',
-                },
-              },
-              x: {
-                grid: {
-                  display: false,
-                },
-              },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: title,
+            font: {
+              size: 16,
             },
           },
-        });
-      } catch (error) {
-        console.error('Error initializing chart:', error);
-      }
-    };
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0,
+            },
+          },
+        },
+      },
+    });
 
-    initChart();
-
+    // Cleanup function
     return () => {
-      isMounted = false;
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
     };
-  }, [data, xKey, yKey, color]);
+  }, [data, xKey, yKey, title, color]);
 
-  return <canvas ref={chartRef} />;
+  return (
+    <div className="w-full h-full">
+      <canvas ref={chartRef}></canvas>
+    </div>
+  );
 } 

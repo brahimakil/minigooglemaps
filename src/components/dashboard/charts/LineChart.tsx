@@ -1,109 +1,96 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
 
-// Define types for Chart.js
-type ChartType = any;
+interface DataItem {
+  [key: string]: string | number; // Add index signature to allow string indexing
+  month: string;
+  count: number;
+}
 
 interface LineChartProps {
-  data: { name: string; value: number }[];
-  xKey: string;
-  yKey: string;
+  data: DataItem[];
+  xKey?: string;
+  yKey?: string;
+  title?: string;
   color?: string;
 }
 
-export default function LineChart({ data, xKey, yKey, color = '#6366F1' }: LineChartProps) {
+export default function LineChart({ 
+  data, 
+  xKey = 'month', 
+  yKey = 'count', 
+  title = 'Monthly Activities', 
+  color = '#4F46E5' 
+}: LineChartProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstance = useRef<ChartType | null>(null);
+  const chartInstance = useRef<Chart | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
-    
-    // Import Chart.js dynamically on the client side
-    const initChart = async () => {
-      if (!chartRef.current || !isMounted) return;
+    if (!chartRef.current || !data || data.length === 0) return;
 
-      try {
-        // Dynamically import Chart.js
-        const { Chart, registerables } = await import('chart.js');
-        Chart.register(...registerables);
+    // Destroy previous chart if it exists
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
 
-        // Destroy existing chart
-        if (chartInstance.current) {
-          chartInstance.current.destroy();
-        }
+    const ctx = chartRef.current.getContext('2d');
+    if (!ctx) return;
 
-        const ctx = chartRef.current.getContext('2d');
-        if (!ctx) return;
-
-        chartInstance.current = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: data.map(item => item[xKey]),
-            datasets: [
-              {
-                label: 'Count',
-                data: data.map(item => item[yKey]),
-                backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                borderColor: color,
-                borderWidth: 2,
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: color,
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-              },
-            ],
+    // Create new chart
+    chartInstance.current = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.map(item => item[xKey]),
+        datasets: [
+          {
+            label: 'Count',
+            data: data.map(item => Number(item[yKey])), // Ensure numeric values
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 2,
+            tension: 0.3,
+            fill: false,
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
-              },
-              tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                padding: 10,
-                titleFont: {
-                  size: 14,
-                },
-                bodyFont: {
-                  size: 14,
-                },
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                grid: {
-                  color: 'rgba(0, 0, 0, 0.05)',
-                },
-              },
-              x: {
-                grid: {
-                  display: false,
-                },
-              },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: title,
+            font: {
+              size: 16,
             },
           },
-        });
-      } catch (error) {
-        console.error('Error initializing line chart:', error);
-      }
-    };
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0,
+            },
+          },
+        },
+      },
+    });
 
-    initChart();
-
+    // Cleanup function
     return () => {
-      isMounted = false;
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
     };
-  }, [data, xKey, yKey, color]);
+  }, [data, xKey, yKey, title, color]);
 
-  return <canvas ref={chartRef} />;
+  return (
+    <div className="w-full h-full">
+      <canvas ref={chartRef}></canvas>
+    </div>
+  );
 } 

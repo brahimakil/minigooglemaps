@@ -108,15 +108,23 @@ export default function NewLocation() {
       
       if (image) {
         // Convert image to base64 for storage in Firestore
-        imageUrl = await new Promise<string>((resolve) => {
+        imageUrl = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = (e) => {
             if (e.target?.result) {
               resolve(e.target.result as string);
+            } else {
+              reject(new Error('Failed to read file'));
             }
           };
+          reader.onerror = () => reject(new Error('Error reading file'));
           reader.readAsDataURL(image);
         });
+      }
+      
+      // Check if the base64 string is too large (Firestore has a 1MB document limit)
+      if (imageUrl && imageUrl.length > 900000) { // Leave some room for other fields
+        throw new Error('Image is too large. Please use a smaller image or compress it first.');
       }
       
       // Add location to Firestore
@@ -136,7 +144,7 @@ export default function NewLocation() {
       router.push('/dashboard/locations');
     } catch (err) {
       console.error('Error creating location:', err);
-      setError('Failed to create location');
+      setError(err instanceof Error ? err.message : 'Failed to create location');
       setLoading(false);
     }
   };

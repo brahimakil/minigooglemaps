@@ -30,33 +30,37 @@ export default function MapPreview() {
     async function fetchLocations() {
       try {
         // Fetch locations
-        const locationsQuery = query(collection(db, 'locations'), limit(20));
+        const locationsQuery = query(collection(db, 'locations'), limit(10));
         const locationsSnapshot = await getDocs(locationsQuery);
+        
         const locationsData = locationsSnapshot.docs.map(doc => {
           const data = doc.data();
           return {
             id: doc.id,
-            name: data.name || 'Unnamed Location',
-            latitude: data.latitude || 0,
-            longitude: data.longitude || 0,
-            type: 'location',
+            name: data.name,
+            latitude: data.latitude,
+            longitude: data.longitude,
+            type: 'location' as const, // Use const assertion to narrow the type
             mainImage: data.mainImage
           };
-        });
-
+        })
+        .filter(location => location.latitude && location.longitude)
+        .filter(Boolean) as Location[];
+        
         // Fetch activities with locations
-        const activitiesQuery = query(collection(db, 'activities'), limit(20));
+        const activitiesQuery = query(collection(db, 'activities'), limit(10));
         const activitiesSnapshot = await getDocs(activitiesQuery);
+        
         const activitiesWithLocation = activitiesSnapshot.docs
           .map(doc => {
             const data = doc.data();
             if (data.latitude && data.longitude) {
               return {
                 id: doc.id,
-                name: data.name || 'Unnamed Activity',
+                name: data.name,
                 latitude: data.latitude,
                 longitude: data.longitude,
-                type: 'activity',
+                type: 'activity' as const, // Use const assertion to narrow the type
                 mainImage: data.mainImage
               };
             }
@@ -77,22 +81,25 @@ export default function MapPreview() {
 
   if (loading) {
     return (
-      <div className="w-full h-96 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse flex items-center justify-center">
-        <span className="text-gray-400">Loading map...</span>
+      <div className="h-96 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
-  // Tyre, Lebanon coordinates
-  const tyreCoordinates: [number, number] = [33.2704, 35.2037];
-  
+  // Default to Tyre, Lebanon if no locations
+  const defaultCenter: [number, number] = [33.2704, 35.2037];
+  const mapCenter = locations.length > 0 
+    ? [locations[0].latitude, locations[0].longitude] as [number, number]
+    : defaultCenter;
+
   return (
-    <div className="h-96 rounded-lg overflow-hidden">
+    <div className="h-96 rounded-lg overflow-hidden shadow-md">
       <MapContainer 
-        center={tyreCoordinates} 
+        center={mapCenter} 
         zoom={13} 
         style={{ height: '100%', width: '100%' }}
-        scrollWheelZoom={true}
+        scrollWheelZoom={false}
         zoomControl={false}
       >
         <ZoomControl position="bottomright" />
@@ -100,7 +107,7 @@ export default function MapPreview() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {locations.map((location) => (
+        {locations.map(location => (
           <Marker 
             key={location.id} 
             position={[location.latitude, location.longitude]}

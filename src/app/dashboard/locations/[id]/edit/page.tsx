@@ -190,7 +190,6 @@ export default function EditLocation({ params }: LocationEditProps) {
     } catch (err) {
       console.error('Error updating location:', err);
       setError(err instanceof Error ? err.message : 'Failed to update location');
-    } finally {
       setSaving(false);
     }
   };

@@ -87,41 +87,12 @@ export default function StatisticsPage() {
       try {
         setLoading(true);
         
-        // Wrap all Firebase calls in try/catch blocks
-        let usersSnapshot;
-        let activitiesSnapshot;
-        let locationsSnapshot;
-        let activityTypesSnapshot;
+        // Fetch basic counts
+        const usersSnapshot = await getDocs(collection(db, 'users'));
+        const activitiesSnapshot = await getDocs(collection(db, 'activities'));
+        const locationsSnapshot = await getDocs(collection(db, 'locations'));
+        const activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
         
-        try {
-          usersSnapshot = await getDocs(collection(db, 'users'));
-        } catch (error) {
-          console.error('Error fetching users:', error);
-          usersSnapshot = { size: 0, docs: [] };
-        }
-        
-        try {
-          activitiesSnapshot = await getDocs(collection(db, 'activities'));
-        } catch (error) {
-          console.error('Error fetching activities:', error);
-          activitiesSnapshot = { size: 0, docs: [], forEach: () => {} };
-        }
-        
-        try {
-          locationsSnapshot = await getDocs(collection(db, 'locations'));
-        } catch (error) {
-          console.error('Error fetching locations:', error);
-          locationsSnapshot = { size: 0, docs: [], forEach: () => {} };
-        }
-        
-        try {
-          activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
-        } catch (error) {
-          console.error('Error fetching activity types:', error);
-          activityTypesSnapshot = { size: 0, docs: [], forEach: () => {} };
-        }
-        
-        // Continue with the rest of the function...
         setUserCount(usersSnapshot.size);
         setActivityCount(activitiesSnapshot.size);
         setLocationCount(locationsSnapshot.size);
@@ -156,11 +127,13 @@ export default function StatisticsPage() {
           
           // Count upcoming vs past activities
           if (data.activityDate) {
-            const activityDate = data.activityDate.toDate ? 
-              data.activityDate.toDate() : 
-              new Date(data.activityDate);
+            const date = data.activityDate.toDate ? 
+              data.activityDate.toDate() :
+              data.activityDate instanceof Date ? 
+                data.activityDate : 
+                new Date(data.activityDate.seconds * 1000);
               
-            if (activityDate > today) {
+            if (date > today) {
               upcomingCount++;
             } else {
               pastCount++;
@@ -211,16 +184,11 @@ export default function StatisticsPage() {
           locationMap.set(doc.id, { id: doc.id, name: data.name, count: 0 });
         });
         
-        // Count activities by location name
+        // Then count activities by location
         activities.forEach(activity => {
-          if (activity.locationName) {
-            // Find location by name
-            for (const [id, locationData] of locationMap.entries()) {
-              if (locationData.name === activity.locationName) {
-                locationData.count += 1;
-                break;
-              }
-            }
+          if (activity.locationName && locationMap.has(activity.locationName)) {
+            const locationData = locationMap.get(activity.locationName)!;
+            locationData.count += 1;
           }
         });
         
@@ -250,8 +218,10 @@ export default function StatisticsPage() {
         activities.forEach(activity => {
           if (activity.createdAt) {
             const date = activity.createdAt.toDate ? 
-              activity.createdAt.toDate() : 
-              new Date(activity.createdAt);
+              activity.createdAt.toDate() :
+              activity.createdAt instanceof Date ? 
+                activity.createdAt : 
+                new Date(activity.createdAt.seconds * 1000);
             const month = months[date.getMonth()];
             monthMap.set(month, (monthMap.get(month) || 0) + 1);
           }
@@ -448,14 +418,13 @@ export default function StatisticsPage() {
           </div>
           <div className="p-5">
             <div className="h-80">
-              <LineChart 
-                data={monthlyActivities.map(item => ({ 
-                  name: item.month, 
-                  value: item.count 
-                }))} 
-                xKey="name"
-                yKey="value"
-                color="#6366F1"
+              <LineChart
+                data={monthlyActivities.map(item => ({
+                  month: item.month,
+                  count: item.count,
+                  [item.month]: item.count
+                }))}
+                title="Monthly Activities"
               />
             </div>
           </div>
