@@ -8,14 +8,6 @@ export async function POST(request: Request) {
   try {
     const { path, data } = await request.json();
     
-    // Check if we're in a server environment and have a valid db
-    if (typeof db.collection !== 'function') {
-      return NextResponse.json(
-        { error: 'Firebase not available in this environment' },
-        { status: 500 }
-      );
-    }
-    
     const docRef = doc(db, path);
     await updateDoc(docRef, {
       ...data,

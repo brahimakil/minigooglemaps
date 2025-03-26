@@ -1,7 +1,7 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
+import { getFirestore, Firestore } from 'firebase/firestore';
+import { getAuth, Auth } from 'firebase/auth';
+import { getStorage, FirebaseStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAo9SSE5mvlGaDFgG7_-LotMzbYt86iZGM",
@@ -13,46 +13,44 @@ const firebaseConfig = {
   measurementId: "G-ZW5V9NSMN4"
 };
 
+console.log('[TRACE] Initializing Firebase app instance');
+console.log('[TRACE] Firebase apps count:', getApps().length);
+
 // Initialize Firebase
 let app: FirebaseApp;
+let db: Firestore;
+let auth: Auth;
+let storage: FirebaseStorage;
 
 // Check if Firebase app is already initialized
 if (!getApps().length) {
   try {
     console.log('[FIREBASE] Initializing new Firebase app instance');
     app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    storage = getStorage(app);
   } catch (error) {
     console.error('[FIREBASE] Error initializing Firebase:', error);
-    // Create a dummy app for SSR if initialization fails
+    // Create dummy objects for SSR
     if (typeof window === 'undefined') {
       console.log('[FIREBASE] Creating dummy app for SSR');
       // @ts-ignore - This is a workaround for SSR
       app = {} as FirebaseApp;
+      // @ts-ignore
+      db = {} as Firestore;
+      // @ts-ignore
+      auth = {} as Auth;
+      // @ts-ignore
+      storage = {} as FirebaseStorage;
     }
   }
 } else {
   console.log('[FIREBASE] Using existing Firebase app instance');
   app = getApps()[0];
-}
-
-// Initialize services with error handling
-let db, auth, storage;
-
-try {
   db = getFirestore(app);
   auth = getAuth(app);
   storage = getStorage(app);
-} catch (error) {
-  console.error('[FIREBASE] Error initializing Firebase services:', error);
-  // Create dummy services for SSR
-  if (typeof window === 'undefined') {
-    // @ts-ignore - This is a workaround for SSR
-    db = {};
-    // @ts-ignore
-    auth = {};
-    // @ts-ignore
-    storage = {};
-  }
 }
 
 export { app, db, auth, storage }; 

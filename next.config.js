@@ -3,6 +3,7 @@ module.exports = {
   reactStrictMode: false,
   images: {
     domains: ['firebasestorage.googleapis.com'],
+    unoptimized: process.env.NODE_ENV === 'production',
   },
   staticPageGenerationTimeout: 300,
   exclude: [/\/api\/update-doc/],
