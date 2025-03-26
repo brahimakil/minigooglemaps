@@ -95,32 +95,20 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
         });
       }
       
-      // Update activity type in Firestore
-      const response = await fetch('/api/update-doc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          collection: 'activityTypes',
-          id,
-          data: {
-            name,
-            description,
-            icon,
-            ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
-            updatedAt: serverTimestamp()
-          }
-        })
+      // Direct Firestore update instead of API call
+      const activityTypeRef = doc(db, 'activityTypes', id);
+      await updateDoc(activityTypeRef, {
+        name,
+        description,
+        icon,
+        ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
+        updatedAt: serverTimestamp()
       });
-      
-      if (!response.ok) throw new Error('Update failed');
       
       router.push('/dashboard/activity-types');
     } catch (err) {
       console.error('Error updating activity type:', err);
       setError('Failed to update activity type. Please try again.');
-    } finally {
       setSaving(false);
     }
   };

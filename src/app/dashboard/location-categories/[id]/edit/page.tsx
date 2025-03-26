@@ -105,67 +105,61 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
         throw new Error('Image is too large. Please use a smaller image or compress it first.');
       }
       
-      // Update location category in Firestore
-      const response = await fetch('/api/update-doc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          collection: 'locationCategories',
-          id,
-          data: {
-            name,
-            description,
-            icon,
-            ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
-            updatedAt: serverTimestamp(),
-          }
-        })
+      // Direct Firestore update instead of API call
+      const categoryRef = doc(db, 'locationCategories', id);
+      await updateDoc(categoryRef, {
+        name,
+        description,
+        icon,
+        ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
+        updatedAt: serverTimestamp()
       });
-      
-      if (!response.ok) throw new Error('Update failed');
       
       router.push('/dashboard/location-categories');
     } catch (err) {
       console.error('Error updating location category:', err);
       setError(err instanceof Error ? err.message : 'Failed to update location category. Please try again.');
-    } finally {
       setSaving(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-6"></div>
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
-            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded mb-6"></div>
-            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
-            <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded mb-6"></div>
-            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-1/4 ml-auto"></div>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex justify-center">
+          <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Location Category</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="md:flex md:items-center md:justify-between mb-6">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:text-3xl sm:truncate">
+            Edit Location Category
+          </h2>
+        </div>
       </div>
       
-      <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-        <form onSubmit={handleSubmit}>
-          {error && (
-            <div className="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
-              {error}
+      <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+        {error && (
+          <div className="p-4 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-500">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
+              </div>
             </div>
-          )}
-          
+          </div>
+        )}
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="grid grid-cols-1 gap-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">

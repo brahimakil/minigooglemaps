@@ -191,38 +191,27 @@ export default function EditActivity({ params }: ActivityEditProps) {
       // Convert the date string to a JavaScript Date object
       const selectedDate = new Date(activityDate);
       
-      const response = await fetch('/api/update-doc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          collection: 'activities',
-          id,
-          data: {
-            name,
-            description,
-            price: price ? parseFloat(price) : 0,
-            status,
-            type,
-            locationName,
-            latitude: latitude || null,
-            longitude: longitude || null,
-            mainImage: imageUrl,
-            media: media,
-            activityDate: selectedDate,
-            updatedAt: serverTimestamp()
-          }
-        })
+      // Direct Firestore update instead of API call
+      const activityRef = doc(db, 'activities', id);
+      await updateDoc(activityRef, {
+        name,
+        description,
+        price: price ? parseFloat(price) : 0,
+        status,
+        type,
+        locationName,
+        latitude: latitude || null,
+        longitude: longitude || null,
+        mainImage: imageUrl,
+        media: media,
+        activityDate: selectedDate,
+        updatedAt: serverTimestamp()
       });
-      
-      if (!response.ok) throw new Error('Update failed');
       
       router.push('/dashboard/activities');
     } catch (err) {
       console.error('Error updating activity:', err);
       setError(err instanceof Error ? err.message : 'Failed to update activity');
-    } finally {
       setSaving(false);
     }
   };

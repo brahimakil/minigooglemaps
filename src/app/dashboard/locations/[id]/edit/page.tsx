@@ -141,17 +141,11 @@ export default function EditLocation({ params }: LocationEditProps) {
       return;
     }
     
-    if (latitude === null || longitude === null) {
-      setError('Please select a location on the map');
-      return;
-    }
-    
     setSaving(true);
     
     try {
       let imageUrl = currentImage;
       
-      // Upload new image if selected
       if (image) {
         // Convert image to base64 for storage in Firestore
         imageUrl = await new Promise<string>((resolve, reject) => {
@@ -168,35 +162,19 @@ export default function EditLocation({ params }: LocationEditProps) {
         });
       }
       
-      // Check if the base64 string is too large (Firestore has a 1MB document limit)
-      if (imageUrl && imageUrl.length > 900000) {
-        throw new Error('Image is too large. Please use a smaller image or compress it first.');
-      }
-      
-      // Update location in Firestore
-      const response = await fetch('/api/update-doc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          collection: 'locations',
-          id,
-          data: {
-            name,
-            address,
-            category,
-            description,
-            latitude,
-            longitude,
-            mainImage: imageUrl,
-            media: media,
-            updatedAt: serverTimestamp()
-          }
-        })
+      // Direct Firestore update instead of API call
+      const locationRef = doc(db, 'locations', id);
+      await updateDoc(locationRef, {
+        name,
+        address,
+        category,
+        description,
+        latitude,
+        longitude,
+        mainImage: imageUrl,
+        media: media,
+        updatedAt: serverTimestamp()
       });
-      
-      if (!response.ok) throw new Error('Update failed');
       
       router.push('/dashboard/locations');
     } catch (err) {
