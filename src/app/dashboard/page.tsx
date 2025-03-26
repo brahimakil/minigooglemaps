@@ -31,13 +31,13 @@ export default function Dashboard() {
     async function fetchDashboardData() {
       try {
         // Fetch stats
-        const usersSnapshot = await getDocs(collection(db, 'users'));
+        const appUsersSnapshot = await getDocs(collection(db, 'appUsers'));
         const activitiesSnapshot = await getDocs(collection(db, 'activities'));
         const locationsSnapshot = await getDocs(collection(db, 'locations'));
         const activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
 
         setStats({
-          users: usersSnapshot.size,
+          users: appUsersSnapshot.size,
           activities: activitiesSnapshot.size,
           locations: locationsSnapshot.size,
           activityTypes: activityTypesSnapshot.size,
