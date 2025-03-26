@@ -73,6 +73,9 @@ interface UserActivityData {
   color?: string;
 }
 
+// Add safety limits to the data processing
+const MAX_PROCESSING = 500;
+
 export default function StatisticsPage() {
   const [loading, setLoading] = useState(true);
   const [activityCount, setActivityCount] = useState(0);
@@ -96,15 +99,16 @@ export default function StatisticsPage() {
     async function fetchStatistics() {
       try {
         setLoading(true);
+        // Add data limit for safety
+        const MAX_RECORDS = 1000;
+        const activitiesQuery = query(collection(db, 'activities'), limit(MAX_RECORDS));
         
         // Fetch basic counts
         const usersSnapshot = await getDocs(collection(db, 'appUsers'));
-        const activitiesSnapshot = await getDocs(collection(db, 'activities'));
         const locationsSnapshot = await getDocs(collection(db, 'locations'));
         const activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
         
         setUserCount(usersSnapshot.size);
-        setActivityCount(activitiesSnapshot.size);
         setLocationCount(locationsSnapshot.size);
         setActivityTypeCount(activityTypesSnapshot.size);
         
@@ -117,6 +121,9 @@ export default function StatisticsPage() {
         const today = new Date();
         let upcomingCount = 0;
         let pastCount = 0;
+        
+        const activitiesSnapshot = await getDocs(activitiesQuery);
+        setActivityCount(activitiesSnapshot.size);
         
         activitiesSnapshot.forEach(doc => {
           const data = doc.data() as ActivityData;
@@ -267,11 +274,11 @@ export default function StatisticsPage() {
         });
         
         // Count activities by price range
-        activities.forEach(activity => {
+        activities.slice(0, MAX_PROCESSING).forEach(activity => {
           if (typeof activity.price === 'number') {
             const price = activity.price;
-            const rangeIndex = priceRanges.findIndex(
-              range => price >= range.min && price <= range.max
+            const rangeIndex = priceRanges.findIndex(range => 
+              price >= range.min && price <= range.max
             );
             if (rangeIndex !== -1) {
               priceRangeData[rangeIndex].count += 1;

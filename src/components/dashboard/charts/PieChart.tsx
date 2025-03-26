@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
 
 // Define types for Chart.js
 type ChartType = any;

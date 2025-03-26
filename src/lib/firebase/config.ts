@@ -13,9 +13,16 @@ const firebaseConfig = {
   measurementId: "G-ZW5V9NSMN4"
 };
 
-// Initialize Firebase only if it hasn't been initialized already
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+console.log('[TRACE] Initializing Firebase app instance');
+if (typeof window !== 'undefined' && !getApps().length) {
+  console.log('[FIREBASE] Client-side initialization');
+  initializeApp(firebaseConfig);
+}
+const app = getApps()[0];
+console.log('[TRACE] Firebase apps count:', getApps().length);
+console.log('[TRACE] Firestore initialization path:', new Error().stack);
 const db = getFirestore(app);
+console.log('[DEBUG] Firestore instance created');
 const auth = getAuth(app);
 const storage = getStorage(app);
 

@@ -174,17 +174,29 @@ export default function EditLocation({ params }: LocationEditProps) {
       }
       
       // Update location in Firestore
-      await updateDoc(doc(db, 'locations', id), {
-        name,
-        address,
-        category,
-        description,
-        latitude,
-        longitude,
-        mainImage: imageUrl,
-        media: media,
-        updatedAt: serverTimestamp()
+      const response = await fetch('/api/update-doc', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          collection: 'locations',
+          id,
+          data: {
+            name,
+            address,
+            category,
+            description,
+            latitude,
+            longitude,
+            mainImage: imageUrl,
+            media: media,
+            updatedAt: serverTimestamp()
+          }
+        })
       });
+      
+      if (!response.ok) throw new Error('Update failed');
       
       router.push('/dashboard/locations');
     } catch (err) {

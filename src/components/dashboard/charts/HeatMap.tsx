@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
 
 // Define types for Chart.js
 type ChartType = any;
@@ -14,13 +15,8 @@ export default function HeatMap({ data }: HeatMapProps) {
   const chartInstance = useRef<ChartType | null>(null);
 
   useEffect(() => {
-    // Import Chart.js dynamically on the client side
-    const initChart = async () => {
+    const initChart = () => {
       if (!chartRef.current) return;
-
-      // Dynamically import Chart.js
-      const { Chart, registerables } = await import('chart.js');
-      Chart.register(...registerables);
 
       // Destroy existing chart
       if (chartInstance.current) {
@@ -30,20 +26,26 @@ export default function HeatMap({ data }: HeatMapProps) {
       const ctx = chartRef.current.getContext('2d');
       if (!ctx) return;
 
-      // Get unique x and y values
-      const xValues = Array.from(new Set(data.map(item => item.x)));
-      const yValues = Array.from(new Set(data.map(item => item.y)));
+      // Optimized data processing
+      const xValues = Array.from(new Set(data.slice(0, 100).map(item => item.x)));
+      const yValues = Array.from(new Set(data.slice(0, 100).map(item => item.y)));
+      
+      // Create a pre-initialized matrix
+      const heatmapData = Array(yValues.length).fill(null).map(() => 
+        new Array(xValues.length).fill(0)
+      );
 
-      // Create a 2D array for the heatmap data
-      const heatmapData = Array(yValues.length).fill(0).map(() => Array(xValues.length).fill(0));
+      // Create a lookup map for faster access
+      const coordMap = new Map();
+      data.slice(0, 1000).forEach(item => {
+        coordMap.set(`${item.x}|${item.y}`, item.value);
+      });
 
-      // Fill the 2D array with values
-      data.forEach(item => {
-        const xIndex = xValues.indexOf(item.x);
-        const yIndex = yValues.indexOf(item.y);
-        if (xIndex !== -1 && yIndex !== -1) {
-          heatmapData[yIndex][xIndex] = item.value;
-        }
+      // Fill matrix using map lookups
+      yValues.forEach((y, yIndex) => {
+        xValues.forEach((x, xIndex) => {
+          heatmapData[yIndex][xIndex] = coordMap.get(`${x}|${y}`) || 0;
+        });
       });
 
       // Create datasets for the heatmap

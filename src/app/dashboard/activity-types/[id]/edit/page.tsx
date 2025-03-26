@@ -96,13 +96,25 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
       }
       
       // Update activity type in Firestore
-      await updateDoc(doc(db, 'activityTypes', id), {
-        name,
-        description,
-        icon,
-        ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
-        updatedAt: serverTimestamp(),
+      const response = await fetch('/api/update-doc', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          collection: 'activityTypes',
+          id,
+          data: {
+            name,
+            description,
+            icon,
+            ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
+            updatedAt: serverTimestamp()
+          }
+        })
       });
+      
+      if (!response.ok) throw new Error('Update failed');
       
       router.push('/dashboard/activity-types');
     } catch (err) {

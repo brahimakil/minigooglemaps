@@ -6,6 +6,11 @@ import { ThemeProvider } from '@/lib/context/theme-context';
 
 // const inter = Inter({ subsets: ['latin'] });
 
+console.log('[MODULE] Layout.tsx imports:',
+  require.resolve('firebase/app'),
+  require.resolve('firebase/firestore')
+);
+
 export const metadata = {
   title: 'Admin Dashboard',
   description: 'Admin dashboard for managing activities and locations',

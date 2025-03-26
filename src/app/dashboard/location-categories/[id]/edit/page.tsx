@@ -106,13 +106,25 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
       }
       
       // Update location category in Firestore
-      await updateDoc(doc(db, 'locationCategories', id), {
-        name,
-        description,
-        icon,
-        ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
-        updatedAt: serverTimestamp(),
+      const response = await fetch('/api/update-doc', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          collection: 'locationCategories',
+          id,
+          data: {
+            name,
+            description,
+            icon,
+            ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
+            updatedAt: serverTimestamp(),
+          }
+        })
       });
+      
+      if (!response.ok) throw new Error('Update failed');
       
       router.push('/dashboard/location-categories');
     } catch (err) {

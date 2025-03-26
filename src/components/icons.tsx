@@ -1,2 +1,2 @@
-// This file redirects imports to the icons/index.tsx file
+// Export all icons from the icons directory
 export * from './icons/index'; 

@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { collection, getDocs, query, orderBy, doc, getDoc, updateDoc, arrayUnion, arrayRemove, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { ActivityIcon, UserIcon, PlusIcon, TrashIcon } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -56,7 +55,7 @@ export default function UserActivitiesPage() {
             type: data.type,
             mainImage: data.mainImage,
             activityDate: data.activityDate,
-            userIds: []
+            userIds: data.userIds || []
           } as Activity;
         });
         
@@ -181,147 +180,63 @@ export default function UserActivitiesPage() {
   };
 
   const filteredUsers = users.filter(user => 
-    user.displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const formatDate = (timestamp: any) => {
-    if (!timestamp) return 'No date';
-    
-    const date = timestamp.toDate ? 
-      timestamp.toDate() : 
-      timestamp instanceof Date ? 
-        timestamp : 
-        new Date(timestamp.seconds * 1000);
-    
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    }).format(date);
-  };
-
-  if (loading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-center">
-          <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900 dark:text-white">User Activities</h1>
-          <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-            Manage user assignments to activities
-          </p>
-        </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <Link href="/dashboard/activities/new">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-            >
-              <PlusIcon className="h-4 w-4 mr-2" />
-              Add Activity
-            </button>
-          </Link>
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Activity User Management</h1>
       </div>
       
-      <div className="mt-8 flex flex-col">
-        <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-                <thead className="bg-gray-50 dark:bg-gray-800">
-                  <tr>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">
-                      Activity
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                      Date
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                      Status
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                      Assigned Users
-                    </th>
-                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                      <span className="sr-only">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
-                  {activities.map((activity) => (
-                    <tr key={activity.id}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                        <div className="flex items-center">
-                          <div className="h-10 w-10 flex-shrink-0">
-                            {activity.mainImage ? (
-                              <Image
-                                src={activity.mainImage}
-                                alt={activity.name}
-                                width={40}
-                                height={40}
-                                className="h-10 w-10 rounded-full object-cover"
-                              />
-                            ) : (
-                              <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                                <ActivityIcon className="h-6 w-6 text-gray-400 dark:text-gray-500" />
-                              </div>
-                            )}
-                          </div>
-                          <div className="ml-4">
-                            <div className="font-medium text-gray-900 dark:text-white">{activity.name}</div>
-                            <div className="text-gray-500 dark:text-gray-400">{activity.type || 'No type'}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                        {activity.activityDate ? formatDate(activity.activityDate) : 'No date'}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm">
-                        <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                          activity.status === 'active' 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' 
-                            : activity.status === 'draft'
-                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-                            : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
-                        }`}>
-                          {activity.status}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                        {activity.userIds?.length || 0} users
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <button
-                          onClick={() => openAssignModal(activity)}
-                          className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-4"
-                        >
-                          Edit Users
-                        </button>
-                        <button
-                          onClick={() => openViewModal(activity)}
-                          className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                        >
-                          View Users
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md">
+          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+            {activities.length === 0 ? (
+              <li className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                No activities found
+              </li>
+            ) : (
+              activities.map((activity) => (
+                <li key={activity.id} className="px-6 py-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 dark:bg-indigo-900 rounded-md flex items-center justify-center">
+                        <ActivityIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-300" />
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900 dark:text-white">{activity.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          {activity.userIds?.length || 0} users assigned
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => openViewModal(activity)}
+                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-100 dark:hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        View Users
+                      </button>
+                      <button
+                        onClick={() => openAssignModal(activity)}
+                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        Manage Users
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
+      )}
       
       {/* Assign Users Modal */}
       <Transition appear show={isOpen} as={Fragment}>
@@ -384,7 +299,7 @@ export default function UserActivitiesPage() {
                                 {user.photoURL ? (
                                   <Image
                                     src={user.photoURL}
-                                    alt={user.displayName}
+                                    alt={user.displayName || ''}
                                     width={32}
                                     height={32}
                                     className="h-8 w-8 rounded-full object-cover"
@@ -455,17 +370,17 @@ export default function UserActivitiesPage() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                   >
-                    Users in {currentActivity?.name}
+                    Users for {currentActivity?.name}
                   </Dialog.Title>
                   
                   <div className="mt-4">
                     {activityUsers.length > 0 ? (
-                      <ul className="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+                      <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                         {activityUsers.map((user) => (
                           <li key={user.id} className="py-3 flex items-center justify-between">
                             <div className="flex items-center">
@@ -473,7 +388,7 @@ export default function UserActivitiesPage() {
                                 {user.photoURL ? (
                                   <Image
                                     src={user.photoURL}
-                                    alt={user.displayName}
+                                    alt={user.displayName || ''}
                                     width={32}
                                     height={32}
                                     className="h-8 w-8 rounded-full object-cover"
@@ -499,11 +414,10 @@ export default function UserActivitiesPage() {
                         ))}
                       </ul>
                     ) : (
-                      <div className="text-center py-8">
-                        <UserIcon className="mx-auto h-12 w-12 text-gray-400" />
-                        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No users</h3>
-                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                          No users are assigned to this activity yet.
+                      <div className="text-center py-6">
+                        <UserIcon className="mx-auto h-8 w-8 text-gray-400" />
+                        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                          No users assigned to this activity
                         </p>
                       </div>
                     )}
@@ -512,7 +426,7 @@ export default function UserActivitiesPage() {
                   <div className="mt-6 flex justify-end">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:bg-indigo-900 dark:text-indigo-100 dark:hover:bg-indigo-800"
                       onClick={() => setIsViewOpen(false)}
                     >
                       Close
