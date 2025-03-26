@@ -70,6 +70,7 @@ interface PriceRangeData {
 interface UserActivityData {
   activityName: string;
   userCount: number;
+  color?: string;
 }
 
 export default function StatisticsPage() {
