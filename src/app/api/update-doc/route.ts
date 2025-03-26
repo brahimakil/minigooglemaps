@@ -1,30 +1,33 @@
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
+import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(req: Request) {
-  const body = await req.json();
-  
+export async function POST(request: Request) {
   try {
-    const docRef = doc(db, body.collection, body.id);
+    const { path, data } = await request.json();
+    
+    // Check if we're in a server environment and have a valid db
+    if (typeof db.collection !== 'function') {
+      return NextResponse.json(
+        { error: 'Firebase not available in this environment' },
+        { status: 500 }
+      );
+    }
+    
+    const docRef = doc(db, path);
     await updateDoc(docRef, {
-      ...body.data,
+      ...data,
       updatedAt: serverTimestamp()
     });
-    return new Response(JSON.stringify({ success: true }), { 
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-  } catch (error) {
-    console.error('API Error:', error);
-    return new Response(JSON.stringify({ error: 'Update failed' }), { 
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    console.error('Error updating document:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to update document' },
+      { status: 500 }
+    );
   }
 } 

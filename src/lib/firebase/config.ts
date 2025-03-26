@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from 'firebase/app';
+import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
@@ -13,17 +13,46 @@ const firebaseConfig = {
   measurementId: "G-ZW5V9NSMN4"
 };
 
-console.log('[TRACE] Initializing Firebase app instance');
-if (typeof window !== 'undefined' && !getApps().length) {
-  console.log('[FIREBASE] Client-side initialization');
-  initializeApp(firebaseConfig);
+// Initialize Firebase
+let app: FirebaseApp;
+
+// Check if Firebase app is already initialized
+if (!getApps().length) {
+  try {
+    console.log('[FIREBASE] Initializing new Firebase app instance');
+    app = initializeApp(firebaseConfig);
+  } catch (error) {
+    console.error('[FIREBASE] Error initializing Firebase:', error);
+    // Create a dummy app for SSR if initialization fails
+    if (typeof window === 'undefined') {
+      console.log('[FIREBASE] Creating dummy app for SSR');
+      // @ts-ignore - This is a workaround for SSR
+      app = {} as FirebaseApp;
+    }
+  }
+} else {
+  console.log('[FIREBASE] Using existing Firebase app instance');
+  app = getApps()[0];
 }
-const app = getApps()[0];
-console.log('[TRACE] Firebase apps count:', getApps().length);
-console.log('[TRACE] Firestore initialization path:', new Error().stack);
-const db = getFirestore(app);
-console.log('[DEBUG] Firestore instance created');
-const auth = getAuth(app);
-const storage = getStorage(app);
+
+// Initialize services with error handling
+let db, auth, storage;
+
+try {
+  db = getFirestore(app);
+  auth = getAuth(app);
+  storage = getStorage(app);
+} catch (error) {
+  console.error('[FIREBASE] Error initializing Firebase services:', error);
+  // Create dummy services for SSR
+  if (typeof window === 'undefined') {
+    // @ts-ignore - This is a workaround for SSR
+    db = {};
+    // @ts-ignore
+    auth = {};
+    // @ts-ignore
+    storage = {};
+  }
+}
 
 export { app, db, auth, storage }; 

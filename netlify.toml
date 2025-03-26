@@ -1,0 +1,24 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+  NODE_VERSION = "18"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Redirect all API routes to 404 during build
+[[redirects]]
+  from = "/api/*"
+  to = "/404"
+  status = 404
+  force = true
+  conditions = {Role = ["build-process"]}
+
+# Normal redirects for client-side
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
