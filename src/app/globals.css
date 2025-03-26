@@ -19,3 +19,47 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans, Arial, Helvetica, sans-serif);
 }
+
+/* Fix for input text colors in light mode */
+.dark input,
+.dark textarea,
+.dark select {
+  color: white;
+}
+
+input, 
+textarea,
+select {
+  color: #1f2937; /* gray-800 for better contrast in light mode */
+}
+
+/* Fix for placeholder text in light mode */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #9ca3af; /* gray-400 for light mode */
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder,
+.dark select::placeholder {
+  color: #6b7280; /* gray-500 for dark mode */
+}
+
+/* Fix for text in the sidebar */
+.text-xl.font-semibold {
+  color: #1f2937; /* gray-800 for light mode */
+}
+
+.dark .text-xl.font-semibold {
+  color: white;
+}
+
+/* Fix for form labels in light mode */
+label {
+  color: #4b5563; /* gray-600 for light mode */
+}
+
+.dark label {
+  color: #e5e7eb; /* gray-200 for dark mode */
+}

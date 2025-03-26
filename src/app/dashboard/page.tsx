@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
-import { MapPinIcon, UsersIcon, CalendarIcon, ActivityIcon, TagIcon, MapIcon } from '@/components/icons';
+import { MapPinIcon, UsersIcon, CalendarIcon, ActivityIcon, TagIcon, MapIcon, UserIcon } from '@/components/icons';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
@@ -232,6 +232,22 @@ export default function Dashboard() {
                 <p className="text-gray-500 dark:text-gray-400">No recent activities found.</p>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* User Activities */}
+        <div className="mt-8">
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">User Activities</h2>
+          <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md">
+            <div className="px-4 py-5 sm:px-6">
+              <Link 
+                href="/dashboard/user-activities"
+                className="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+              >
+                <UserIcon className="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6" />
+                User Activities
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -10,7 +10,8 @@ import {
   MapIcon, 
   LayersIcon, 
   CalendarIcon, 
-  BarChartIcon 
+  BarChartIcon,
+  UsersIcon
 } from '@/components/icons';
 
 export default function Sidebar() {
@@ -19,6 +20,7 @@ export default function Sidebar() {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Users', href: '/dashboard/users', icon: UserIcon },
+    { name: 'User Activities', href: '/dashboard/user-activities', icon: UsersIcon },
     { name: 'Activities', href: '/dashboard/activities', icon: ActivityIcon },
     { name: 'Activity Types', href: '/dashboard/activity-types', icon: TagIcon },
     { name: 'Locations', href: '/dashboard/locations', icon: MapIcon },

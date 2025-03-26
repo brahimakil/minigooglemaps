@@ -11,7 +11,8 @@ import {
   TagIcon, 
   MapPinIcon,
   TrendingUpIcon,
-  ClockIcon
+  ClockIcon,
+  UserIcon
 } from '@/components/icons';
 import dynamic from 'next/dynamic';
 
@@ -66,6 +67,11 @@ interface PriceRangeData {
   count: number;
 }
 
+interface UserActivityData {
+  activityName: string;
+  userCount: number;
+}
+
 export default function StatisticsPage() {
   const [loading, setLoading] = useState(true);
   const [activityCount, setActivityCount] = useState(0);
@@ -81,6 +87,9 @@ export default function StatisticsPage() {
   const [priceRanges, setPriceRanges] = useState<PriceRangeData[]>([]);
   const [upcomingActivities, setUpcomingActivities] = useState(0);
   const [pastActivities, setPastActivities] = useState(0);
+  const [userActivitiesData, setUserActivitiesData] = useState<UserActivityData[]>([]);
+  const [totalAssignments, setTotalAssignments] = useState(0);
+  const [avgUsersPerActivity, setAvgUsersPerActivity] = useState(0);
 
   useEffect(() => {
     async function fetchStatistics() {
@@ -88,7 +97,7 @@ export default function StatisticsPage() {
         setLoading(true);
         
         // Fetch basic counts
-        const usersSnapshot = await getDocs(collection(db, 'users'));
+        const usersSnapshot = await getDocs(collection(db, 'appUsers'));
         const activitiesSnapshot = await getDocs(collection(db, 'activities'));
         const locationsSnapshot = await getDocs(collection(db, 'locations'));
         const activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
@@ -270,6 +279,49 @@ export default function StatisticsPage() {
         });
         
         setPriceRanges(priceRangeData);
+        
+        // Fetch user-activity relationships
+        const activityUsersSnapshot = await getDocs(collection(db, 'activityUsers'));
+        let totalUserAssignments = 0;
+        const activityUserMap = new Map<string, number>();
+        
+        // Process activity-user relationships
+        activityUsersSnapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.userIds && Array.isArray(data.userIds)) {
+            const activityId = doc.id;
+            const userCount = data.userIds.length;
+            activityUserMap.set(activityId, userCount);
+            totalUserAssignments += userCount;
+          }
+        });
+        
+        // Get activity names for the IDs
+        const userActivitiesList: UserActivityData[] = [];
+        const entries = Array.from(activityUserMap.entries());
+        
+        for (let i = 0; i < entries.length; i++) {
+          const activityId = entries[i][0];
+          const userCount = entries[i][1];
+          
+          // Get activity name
+          const activityDoc = activities.find(a => a.id === activityId);
+          if (activityDoc) {
+            userActivitiesList.push({
+              activityName: activityDoc.name || `Activity ${activityId.substring(0, 6)}`,
+              userCount
+            });
+          }
+        }
+        
+        // Sort by user count (descending) and take top 10
+        const topUserActivities = userActivitiesList
+          .sort((a, b) => b.userCount - a.userCount)
+          .slice(0, 10);
+        
+        setUserActivitiesData(topUserActivities);
+        setTotalAssignments(totalUserAssignments);
+        setAvgUsersPerActivity(totalUserAssignments / Math.max(activityCount, 1));
         
       } catch (error) {
         console.error('Error fetching statistics:', error);
@@ -550,6 +602,89 @@ export default function StatisticsPage() {
                       <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{location.name}</span>
                     </div>
                     <span className="text-sm font-medium text-gray-900 dark:text-white">{location.count}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* User-Activity Distribution */}
+      <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white flex items-center">
+              <UsersIcon className="h-5 w-5 mr-2 text-blue-500" />
+              User Assignment Distribution
+            </h3>
+          </div>
+          <div className="p-5">
+            <div className="h-80">
+              <BarChart 
+                data={userActivitiesData.map(item => ({ 
+                  name: item.activityName, 
+                  value: item.userCount 
+                }))} 
+                xKey="name"
+                yKey="value"
+                color="#3B82F6"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white flex items-center">
+              <UserIcon className="h-5 w-5 mr-2 text-blue-500" />
+              User Assignment Metrics
+            </h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4 text-center">
+                <p className="text-sm font-medium text-blue-800 dark:text-blue-300">Total Assignments</p>
+                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{totalAssignments}</p>
+                <p className="text-xs text-blue-500 dark:text-blue-300 mt-1">
+                  {totalAssignments > 0 
+                    ? `${(totalAssignments / userCount).toFixed(1)} per user` 
+                    : 'No assignments'}
+                </p>
+              </div>
+              
+              <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-4 text-center">
+                <p className="text-sm font-medium text-indigo-800 dark:text-indigo-300">Avg Users per Activity</p>
+                <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{avgUsersPerActivity.toFixed(1)}</p>
+                <p className="text-xs text-indigo-500 dark:text-indigo-300 mt-1">
+                  {avgUsersPerActivity > 0 
+                    ? `${Math.round(avgUsersPerActivity * 100 / Math.max(activityCount, 1))}% coverage` 
+                    : 'No assignments'}
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-6">
+              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Top Activities by User Count</h4>
+              <ul className="space-y-3">
+                {userActivitiesData.slice(0, 5).map((item, index) => (
+                  <li key={index} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className={`
+                        flex items-center justify-center h-6 w-6 rounded-full text-xs font-medium
+                        ${index === 0 ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300' : 
+                          index === 1 ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300' : 
+                          'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'}
+                      `}>
+                        {index + 1}
+                      </span>
+                      <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 truncate max-w-[180px]">
+                        {item.activityName}
+                      </span>
+                    </div>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      {item.userCount} {item.userCount === 1 ? 'user' : 'users'}
+                    </span>
                   </li>
                 ))}
               </ul>
