@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
-  reactStrictMode: false,
+const nextConfig = {
+  reactStrictMode: true,
   images: {
-    domains: ['firebasestorage.googleapis.com'],
+    domains: [
+      'lh3.googleusercontent.com',  // Add this for Google profile images
+      'firebasestorage.googleapis.com'
+    ],
     unoptimized: process.env.NODE_ENV === 'production',
   },
   staticPageGenerationTimeout: 300,
@@ -34,4 +37,6 @@ module.exports = {
     config.optimization.chunkIds = 'named';
     return config;
   },
-}; 
+};
+
+module.exports = nextConfig; 

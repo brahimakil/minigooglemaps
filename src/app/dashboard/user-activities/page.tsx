@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect, Fragment } from 'react';
-import { collection, getDocs, query, orderBy, doc, getDoc, updateDoc, arrayUnion, arrayRemove, setDoc } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, doc, getDoc, updateDoc, deleteDoc, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
-import { ActivityIcon, UserIcon, PlusIcon, TrashIcon } from '@/components/icons';
+import { ActivityIcon, UserIcon, TrashIcon } from '@/components/icons';
 import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface Activity {
   id: string;
@@ -16,7 +15,6 @@ interface Activity {
   type?: string;
   mainImage?: string;
   activityDate?: any;
-  userIds?: string[];
 }
 
 interface AppUser {
@@ -24,23 +22,32 @@ interface AppUser {
   displayName: string;
   email: string;
   photoURL?: string;
+  uid?: string;
+  isGoogleUser?: boolean;
+}
+
+interface Registration {
+  id: string;
+  userId: string;
+  activityId: string;
+  registeredAt: any;
 }
 
 export default function UserActivitiesPage() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [users, setUsers] = useState<AppUser[]>([]);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [currentActivity, setCurrentActivity] = useState<Activity | null>(null);
-  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
   const [activityUsers, setActivityUsers] = useState<AppUser[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
+        console.log("Fetching data...");
         
         // Fetch activities
         const activitiesQuery = query(collection(db, 'activities'), orderBy('name'));
@@ -54,35 +61,50 @@ export default function UserActivitiesPage() {
             status: data.status || 'draft',
             type: data.type,
             mainImage: data.mainImage,
-            activityDate: data.activityDate,
-            userIds: data.userIds || []
+            activityDate: data.activityDate
           } as Activity;
         });
         
-        // Fetch users
-        const usersQuery = query(collection(db, 'appUsers'), orderBy('displayName'));
-        const usersSnapshot = await getDocs(usersQuery);
-        const usersData = usersSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        } as AppUser));
+        console.log(`Fetched ${activitiesData.length} activities`);
         
-        // Fetch activity-user relationships
-        const activityUsersQuery = query(collection(db, 'activityUsers'));
-        const activityUsersSnapshot = await getDocs(activityUsersQuery);
+        // Fetch all users
+        const usersCollection = collection(db, 'appUsers');
+        const usersSnapshot = await getDocs(usersCollection);
         
-        // Update activities with user IDs
-        activityUsersSnapshot.forEach(doc => {
-          const activityId = doc.id;
+        console.log(`Fetched ${usersSnapshot.docs.length} users`);
+        
+        const usersData = usersSnapshot.docs.map(doc => {
           const data = doc.data();
-          const activity = activitiesData.find(a => a.id === activityId);
-          if (activity && data.userIds) {
-            activity.userIds = data.userIds;
-          }
+          
+          return {
+            id: doc.id,
+            displayName: data.displayName || 'No Name',
+            email: data.email || 'No Email',
+            photoURL: data.photoURL || data.photoUrl,
+            uid: data.uid,
+            isGoogleUser: !!data.photoUrl || data.providerId === 'google.com' || !!data.uid
+          } as AppUser;
+        });
+        
+        // Fetch registrations
+        const registrationsQuery = query(collection(db, 'registrations'));
+        const registrationsSnapshot = await getDocs(registrationsQuery);
+        
+        console.log(`Fetched ${registrationsSnapshot.docs.length} registrations`);
+        
+        const registrationsData = registrationsSnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            userId: data.userId,
+            activityId: data.activityId,
+            registeredAt: data.registeredAt
+          } as Registration;
         });
         
         setActivities(activitiesData);
         setUsers(usersData);
+        setRegistrations(registrationsData);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -93,257 +115,174 @@ export default function UserActivitiesPage() {
     fetchData();
   }, []);
 
-  const openAssignModal = (activity: Activity) => {
-    setCurrentActivity(activity);
-    setSelectedUserIds(activity.userIds || []);
-    setIsOpen(true);
+  const getRegisteredUsersCount = (activityId: string) => {
+    return registrations.filter(reg => reg.activityId === activityId).length;
   };
 
   const openViewModal = async (activity: Activity) => {
     setCurrentActivity(activity);
+    
+    // Get registrations for this activity
+    const activityRegistrations = registrations.filter(reg => reg.activityId === activity.id);
+    console.log(`Found ${activityRegistrations.length} registrations for activity ${activity.id}`);
+    
+    // Get user IDs from registrations
+    const userIds = activityRegistrations.map(reg => reg.userId);
+    console.log("User IDs for activity:", userIds);
+    
+    // Match users by both ID and UID
+    const activityUsersList = users.filter(user => 
+      userIds.includes(user.id) || 
+      (user.uid && userIds.includes(user.uid))
+    );
+    
+    console.log("Matched users:", activityUsersList);
+    
+    setActivityUsers(activityUsersList);
     setIsViewOpen(true);
-    
-    try {
-      // Get users for this activity
-      if (activity.userIds && activity.userIds.length > 0) {
-        const activityUsersData = users.filter(user => 
-          activity.userIds?.includes(user.id)
-        );
-        setActivityUsers(activityUsersData);
-      } else {
-        setActivityUsers([]);
-      }
-    } catch (error) {
-      console.error('Error fetching activity users:', error);
-    }
   };
 
-  const handleUserSelection = (userId: string) => {
-    setSelectedUserIds(prev => {
-      if (prev.includes(userId)) {
-        return prev.filter(id => id !== userId);
-      } else {
-        return [...prev, userId];
-      }
-    });
-  };
-
-  const handleSaveAssignments = async () => {
+  const handleRemoveRegistration = async (userId: string) => {
     if (!currentActivity) return;
     
     try {
-      // Update the activity-users relationship in Firestore
-      await setDoc(doc(db, 'activityUsers', currentActivity.id), {
-        userIds: selectedUserIds
-      });
+      setDeleteLoading(userId);
+      console.log(`Removing user ${userId} from activity ${currentActivity.id}`);
+      
+      // Find the registration to delete
+      const registrationToDelete = registrations.find(
+        reg => reg.activityId === currentActivity.id && 
+        (reg.userId === userId || users.find(u => u.uid === userId)?.id === reg.userId)
+      );
+      
+      if (!registrationToDelete) {
+        console.error("Registration not found");
+        alert("Registration not found");
+        return;
+      }
+      
+      // Delete the registration
+      await deleteDoc(doc(db, 'registrations', registrationToDelete.id));
+      
+      console.log("Registration removed successfully");
       
       // Update local state
-      setActivities(activities.map(activity => {
-        if (activity.id === currentActivity.id) {
-          return {
-            ...activity,
-            userIds: selectedUserIds
-          };
-        }
-        return activity;
-      }));
+      setRegistrations(registrations.filter(reg => reg.id !== registrationToDelete.id));
+      setActivityUsers(activityUsers.filter(user => 
+        user.id !== userId && user.uid !== userId
+      ));
       
-      setIsOpen(false);
+      // If no users left, close the modal
+      if (activityUsers.length <= 1) {
+        setIsViewOpen(false);
+      }
     } catch (error) {
-      console.error('Error saving user assignments:', error);
+      console.error('Error removing registration:', error);
+      alert('Failed to remove registration. Please try again.');
+    } finally {
+      setDeleteLoading(null);
     }
   };
-
-  const handleRemoveUser = async (userId: string) => {
-    if (!currentActivity) return;
-    
-    try {
-      // Remove user from activity
-      await updateDoc(doc(db, 'activityUsers', currentActivity.id), {
-        userIds: arrayRemove(userId)
-      });
-      
-      // Update local state
-      setActivityUsers(activityUsers.filter(user => user.id !== userId));
-      setActivities(activities.map(activity => {
-        if (activity.id === currentActivity.id) {
-          return {
-            ...activity,
-            userIds: (activity.userIds || []).filter(id => id !== userId)
-          };
-        }
-        return activity;
-      }));
-    } catch (error) {
-      console.error('Error removing user from activity:', error);
-    }
-  };
-
-  const filteredUsers = users.filter(user => 
-    user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Activity User Management</h1>
+    <div className="px-4 sm:px-6 lg:px-8">
+      <div className="sm:flex sm:items-center">
+        <div className="sm:flex-auto">
+          <h1 className="text-xl font-semibold text-gray-900 dark:text-white">User Activities</h1>
+          <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+            View which users are registered for which activities.
+          </p>
+        </div>
       </div>
       
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="mt-6 flex justify-center">
+          <div className="w-8 h-8 border-t-2 border-b-2 border-indigo-500 rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md">
-          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-            {activities.length === 0 ? (
-              <li className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                No activities found
-              </li>
-            ) : (
-              activities.map((activity) => (
-                <li key={activity.id} className="px-6 py-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 dark:bg-indigo-900 rounded-md flex items-center justify-center">
-                        <ActivityIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-300" />
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">{activity.name}</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {activity.userIds?.length || 0} users assigned
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => openViewModal(activity)}
-                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-100 dark:hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        View Users
-                      </button>
-                      <button
-                        onClick={() => openAssignModal(activity)}
-                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Manage Users
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
-      )}
-      
-      {/* Assign Users Modal */}
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-50" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
-                  >
-                    Assign Users to {currentActivity?.name}
-                  </Dialog.Title>
-                  
-                  <div className="mt-4">
-                    <div className="mb-4">
-                      <input
-                        type="text"
-                        placeholder="Search users..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white sm:text-sm"
-                      />
-                    </div>
-                    
-                    <div className="max-h-96 overflow-y-auto">
-                      <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                        {filteredUsers.map((user) => (
-                          <li key={user.id} className="py-3 flex items-center">
-                            <input
-                              type="checkbox"
-                              id={`user-${user.id}`}
-                              checked={selectedUserIds.includes(user.id)}
-                              onChange={() => handleUserSelection(user.id)}
-                              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                            />
-                            <label htmlFor={`user-${user.id}`} className="ml-3 flex items-center cursor-pointer">
-                              <div className="h-8 w-8 flex-shrink-0">
-                                {user.photoURL ? (
-                                  <Image
-                                    src={user.photoURL}
-                                    alt={user.displayName || ''}
-                                    width={32}
-                                    height={32}
-                                    className="h-8 w-8 rounded-full object-cover"
-                                  />
-                                ) : (
-                                  <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                                    <UserIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" />
-                                  </div>
-                                )}
-                              </div>
-                              <div className="ml-3">
-                                <p className="text-sm font-medium text-gray-900 dark:text-white">{user.displayName}</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
-                              </div>
-                            </label>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 flex justify-end space-x-3">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={handleSaveAssignments}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
+        <div className="mt-8 flex flex-col">
+          <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-800">
+                    <tr>
+                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">
+                        Activity
+                      </th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                        Type
+                      </th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                        Status
+                      </th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                        Registered Users
+                      </th>
+                      <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                        <span className="sr-only">View</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+                    {activities.map((activity) => (
+                      <tr key={activity.id}>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                          <div className="flex items-center">
+                            <div className="h-10 w-10 flex-shrink-0">
+                              {activity.mainImage ? (
+                                <div className="h-10 w-10 rounded-full overflow-hidden">
+                                  <img src={activity.mainImage} alt="" className="h-10 w-10 object-cover" />
+                                </div>
+                              ) : (
+                                <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                                  <ActivityIcon className="h-6 w-6 text-gray-400 dark:text-gray-500" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="ml-4">
+                              <div className="font-medium text-gray-900 dark:text-white">{activity.name}</div>
+                              {activity.description && (
+                                <div className="text-gray-500 dark:text-gray-400 truncate max-w-xs">
+                                  {activity.description}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                          {activity.type || 'N/A'}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm">
+                          <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
+                            activity.status === 'active' 
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+                              : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                          }`}>
+                            {activity.status || 'draft'}
+                          </span>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                          {getRegisteredUsersCount(activity.id)} users
+                        </td>
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button
+                            onClick={() => openViewModal(activity)}
+                            className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
+                          >
+                            View<span className="sr-only">, {activity.name}</span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </Dialog>
-      </Transition>
-      
+        </div>
+      )}
+
       {/* View Users Modal */}
       <Transition appear show={isViewOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => setIsViewOpen(false)}>
@@ -375,24 +314,24 @@ export default function UserActivitiesPage() {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                   >
-                    Users for {currentActivity?.name}
+                    Registered Users for {currentActivity?.name}
                   </Dialog.Title>
                   
                   <div className="mt-4">
-                    {activityUsers.length > 0 ? (
+                    {activityUsers.length === 0 ? (
+                      <p className="text-center text-gray-500 dark:text-gray-400 py-4">
+                        No users registered for this activity
+                      </p>
+                    ) : (
                       <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                         {activityUsers.map((user) => (
-                          <li key={user.id} className="py-3 flex items-center justify-between">
+                          <li key={user.id || user.uid} className="py-3 flex items-center justify-between">
                             <div className="flex items-center">
                               <div className="h-8 w-8 flex-shrink-0">
                                 {user.photoURL ? (
-                                  <Image
-                                    src={user.photoURL}
-                                    alt={user.displayName || ''}
-                                    width={32}
-                                    height={32}
-                                    className="h-8 w-8 rounded-full object-cover"
-                                  />
+                                  <div className="h-8 w-8 rounded-full overflow-hidden">
+                                    <img src={user.photoURL} alt="" className="h-8 w-8 object-cover" />
+                                  </div>
                                 ) : (
                                   <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                                     <UserIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" />
@@ -402,31 +341,34 @@ export default function UserActivitiesPage() {
                               <div className="ml-3">
                                 <p className="text-sm font-medium text-gray-900 dark:text-white">{user.displayName}</p>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+                                {user.isGoogleUser && (
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                    Google
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <button
-                              onClick={() => handleRemoveUser(user.id)}
+                              onClick={() => handleRemoveRegistration(user.uid || user.id)}
+                              disabled={!!deleteLoading}
                               className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                             >
-                              <TrashIcon className="h-5 w-5" />
+                              {deleteLoading === (user.uid || user.id) ? (
+                                <div className="w-5 h-5 border-t-2 border-b-2 border-red-500 rounded-full animate-spin"></div>
+                              ) : (
+                                <TrashIcon className="h-5 w-5" />
+                              )}
                             </button>
                           </li>
                         ))}
                       </ul>
-                    ) : (
-                      <div className="text-center py-6">
-                        <UserIcon className="mx-auto h-8 w-8 text-gray-400" />
-                        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                          No users assigned to this activity
-                        </p>
-                      </div>
                     )}
                   </div>
 
                   <div className="mt-6 flex justify-end">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:bg-indigo-900 dark:text-indigo-100 dark:hover:bg-indigo-800"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                       onClick={() => setIsViewOpen(false)}
                     >
                       Close

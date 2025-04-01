@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
-import { collection, getDocs, query, orderBy, limit, deleteDoc, doc, addDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, limit, deleteDoc, doc, addDoc, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { UserIcon, PlusIcon, PencilIcon, TrashIcon } from '@/components/icons';
 import Image from 'next/image';
@@ -15,6 +15,8 @@ interface AppUser {
   photoURL?: string;
   phoneNumber?: string;
   createdAt: any;
+  isGoogleUser: boolean;
+  uid: string;
 }
 
 export default function UsersPage() {
@@ -41,17 +43,48 @@ export default function UsersPage() {
   async function fetchUsers() {
     try {
       setLoading(true);
-      const usersQuery = query(
-        collection(db, 'appUsers'),
-        orderBy('createdAt', 'desc'),
-        limit(100)
-      );
-      const snapshot = await getDocs(usersQuery);
-      const usersData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as AppUser[];
+      console.log("Fetching users...");
       
+      // First, get all documents from the appUsers collection without any ordering
+      const usersCollection = collection(db, 'appUsers');
+      const snapshot = await getDocs(usersCollection);
+      
+      console.log(`Found ${snapshot.size} users in appUsers collection`);
+      
+      // Log the first document to see its structure
+      if (snapshot.docs.length > 0) {
+        console.log("First user document data:", snapshot.docs[0].data());
+      }
+      
+      const usersData = snapshot.docs.map(doc => {
+        const data = doc.data();
+        console.log(`Processing user ${doc.id}:`, data);
+        
+        return {
+          id: doc.id,
+          displayName: data.displayName || 'No Name',
+          email: data.email || 'No Email',
+          photoURL: data.photoURL || data.photoUrl, // Handle both property names
+          phoneNumber: data.phoneNumber || '',
+          createdAt: data.createdAt || null,
+          isGoogleUser: !!data.photoUrl || !!data.providerId === 'google.com' || data.uid !== undefined,
+          uid: data.uid || doc.id // Use the provided UID or fallback to doc ID
+        };
+      }) as AppUser[];
+      
+      // Sort the users client-side, with users having createdAt first
+      usersData.sort((a, b) => {
+        if (a.createdAt && b.createdAt) {
+          return b.createdAt.seconds - a.createdAt.seconds; // Descending order
+        } else if (a.createdAt) {
+          return -1; // a comes first
+        } else if (b.createdAt) {
+          return 1; // b comes first
+        }
+        return 0; // Keep original order for users without createdAt
+      });
+      
+      console.log(`Processed ${usersData.length} users for display`);
       setUsers(usersData);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -201,38 +234,19 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Users</h1>
           <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-            A list of all the users in your application.
+            A list of all users in your application.
           </p>
-        </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <button
-            type="button"
-            onClick={openAddModal}
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-          >
-            <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            Add User
-          </button>
         </div>
       </div>
       
       {loading ? (
         <div className="mt-6 flex justify-center">
-          <div className="animate-pulse flex space-x-4">
-            <div className="rounded-full bg-gray-200 dark:bg-gray-700 h-12 w-12"></div>
-            <div className="flex-1 space-y-4 py-1">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-              <div className="space-y-2">
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
-              </div>
-            </div>
-          </div>
+          <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
         <div className="mt-8 flex flex-col">
@@ -243,13 +257,16 @@ export default function UsersPage() {
                   <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>
                       <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">
-                        Name
+                        User
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                         Email
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                        Phone
+                        Auth Type
+                      </th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                        UID
                       </th>
                       <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                         <span className="sr-only">Actions</span>
@@ -257,72 +274,57 @@ export default function UsersPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
-                    {users.length === 0 ? (
-                      <tr>
-                        <td colSpan={4} className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                          No users found. Add your first user to get started.
+                    {users.map((user) => (
+                      <tr key={user.id}>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                          <div className="flex items-center">
+                            <div className="h-10 w-10 flex-shrink-0">
+                              {user.photoURL ? (
+                                <img className="h-10 w-10 rounded-full" src={user.photoURL} alt="" />
+                              ) : (
+                                <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                                  <UserIcon className="h-6 w-6 text-gray-400" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="ml-4">
+                              <div className="font-medium text-gray-900 dark:text-white">{user.displayName}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                          {user.email}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                          {user.isGoogleUser ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100">
+                              Google
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
+                              Email
+                            </span>
+                          )}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-mono text-xs">{user.uid?.substring(0, 10)}...</span>
+                        </td>
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button
+                            onClick={() => handleDelete(user.id)}
+                            disabled={deleteLoading === user.id}
+                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 disabled:opacity-50"
+                          >
+                            {deleteLoading === user.id ? (
+                              <div className="w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                              <TrashIcon className="h-5 w-5" />
+                            )}
+                            <span className="sr-only">Delete</span>
+                          </button>
                         </td>
                       </tr>
-                    ) : (
-                      users.map((user) => (
-                        <tr key={user.id}>
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                            <div className="flex items-center">
-                              <div className="h-10 w-10 flex-shrink-0">
-                                {user.photoURL ? (
-                                  <Image
-                                    className="h-10 w-10 rounded-full object-cover"
-                                    src={user.photoURL}
-                                    alt=""
-                                    width={40}
-                                    height={40}
-                                  />
-                                ) : (
-                                  <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                                    <UserIcon className="h-6 w-6 text-gray-400 dark:text-gray-500" />
-                                  </div>
-                                )}
-                              </div>
-                              <div className="ml-4">
-                                <div className="font-medium text-gray-900 dark:text-white">{user.displayName}</div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                            {user.email}
-                          </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                            {user.phoneNumber || '-'}
-                          </td>
-                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                            <button
-                              onClick={() => openEditModal(user)}
-                              className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-4"
-                            >
-                              <PencilIcon className="h-5 w-5" />
-                              <span className="sr-only">Edit {user.displayName}</span>
-                            </button>
-                            <button
-                              onClick={() => handleDelete(user.id)}
-                              disabled={deleteLoading === user.id}
-                              className={`text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 ${
-                                deleteLoading === user.id ? 'opacity-50 cursor-not-allowed' : ''
-                              }`}
-                            >
-                              {deleteLoading === user.id ? (
-                                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                              ) : (
-                                <TrashIcon className="h-5 w-5" />
-                              )}
-                              <span className="sr-only">Delete {user.displayName}</span>
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
+                    ))}
                   </tbody>
                 </table>
               </div>
