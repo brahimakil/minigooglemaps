@@ -218,7 +218,9 @@ export default function UsersPage() {
           {
             id: docRef.id,
             ...newUser,
-            createdAt: new Date() // Temporary date for UI until refresh
+            createdAt: new Date(), // Temporary date for UI until refresh
+            isGoogleUser: false, // Add this property for manually created users
+            uid: docRef.id // Use the document ID as the UID
           } as AppUser,
           ...users
         ]);
