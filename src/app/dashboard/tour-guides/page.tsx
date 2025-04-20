@@ -210,12 +210,12 @@ export default function TourGuidesPage() {
                             >
                               View
                             </button>
-                            <Link
+                            {/* <Link
                               href={`/dashboard/tour-guides/${guide.id}/assignments`}
                               className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                             >
                               Assignments
-                            </Link>
+                            </Link> */}
                           </td>
                         </tr>
                       ))
@@ -266,21 +266,11 @@ export default function TourGuidesPage() {
                     <div className="mt-4">
                       <div className="flex items-center mb-6">
                         <div className="h-16 w-16 flex-shrink-0 mr-4">
-                          {viewingGuide.photoURL ? (
-                            <div className="h-16 w-16 rounded-full overflow-hidden">
-                              <img
-                                src={viewingGuide.photoURL}
-                                alt={viewingGuide.fullName}
-                                className="h-16 w-16 rounded-full object-cover"
-                              />
-                            </div>
-                          ) : (
-                            <div className="h-16 w-16 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
-                              <span className="text-2xl font-medium text-indigo-600 dark:text-indigo-300">
-                                {viewingGuide.fullName.charAt(0)}
-                              </span>
-                            </div>
-                          )}
+                          <div className="h-16 w-16 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                            <span className="text-2xl font-medium text-indigo-600 dark:text-indigo-300">
+                              {viewingGuide.fullName.charAt(0)}
+                            </span>
+                          </div>
                         </div>
                         <div>
                           <h4 className="text-xl font-medium text-gray-900 dark:text-white">
@@ -297,11 +287,6 @@ export default function TourGuidesPage() {
                             }`}>
                               {viewingGuide.active !== false ? 'Active' : 'Inactive'}
                             </span>
-                            {viewingGuide.idCardVerified && (
-                              <span className="ml-2 inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                Verified
-                              </span>
-                            )}
                           </div>
                         </div>
                       </div>
