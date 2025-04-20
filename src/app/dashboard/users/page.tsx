@@ -67,7 +67,7 @@ export default function UsersPage() {
           photoURL: data.photoURL || data.photoUrl, // Handle both property names
           phoneNumber: data.phoneNumber || '',
           createdAt: data.createdAt || null,
-          isGoogleUser: !!data.photoUrl || !!data.providerId === 'google.com' || data.uid !== undefined,
+          isGoogleUser: !!data.photoUrl || data.providerId === 'google.com' || data.uid !== undefined,
           uid: data.uid || doc.id // Use the provided UID or fallback to doc ID
         };
       }) as AppUser[];
