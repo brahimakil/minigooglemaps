@@ -14,6 +14,24 @@ import {
   UsersIcon
 } from '@/components/icons';
 
+// Add a tour guide icon
+function TourGuideIcon({ className }: { className?: string }) {
+  return (
+    <svg 
+      className={className} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <path d="M9 18l6-6-6-6" />
+      <path d="M14 18h5a2 2 0 002-2V8a2 2 0 00-2-2h-5" />
+    </svg>
+  );
+}
+
 export default function Sidebar() {
   const pathname = usePathname();
   
@@ -25,6 +43,8 @@ export default function Sidebar() {
     { name: 'Activity Types', href: '/dashboard/activity-types', icon: TagIcon },
     { name: 'Locations', href: '/dashboard/locations', icon: MapIcon },
     { name: 'Location Categories', href: '/dashboard/location-categories', icon: LayersIcon },
+    { name: 'Tour Guides', href: '/dashboard/tour-guides', icon: TourGuideIcon },
+    { name: 'Guide Requests', href: '/dashboard/tour-guide-requests', icon: TourGuideIcon },
     { name: 'Calendar', href: '/dashboard/calendar', icon: CalendarIcon },
     { name: 'Statistics', href: '/dashboard/statistics', icon: BarChartIcon },
   ];
@@ -73,4 +93,4 @@ export default function Sidebar() {
       </div>
     </div>
   );
-} 
+}

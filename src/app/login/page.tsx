@@ -138,6 +138,19 @@ export default function Login() {
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
+          
+          {/* Tour Guide Request Button */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Are you a tour guide?{' '}
+              <Link 
+                href="/tour-guide-request" 
+                className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+              >
+                Request a tour guide account
+              </Link>
+            </p>
+          </div>
         </form>
       </div>
     </div>
