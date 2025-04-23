@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Fragment } from 'react';
-import { collection, query, orderBy, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, query, orderBy, getDocs, doc, deleteDoc, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
