@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
+  outputFileTracingIgnores: [
+    'node_modules/**',
+    '.git/**',
+    '.next/**',
+  ],
   images: {
     domains: [
       'lh3.googleusercontent.com',  // Add this for Google profile images
@@ -11,13 +17,6 @@ const nextConfig = {
   staticPageGenerationTimeout: 300,
   experimental: {
     serverComponentsExternalPackages: ['firebase'],
-    optimizePackageImports: [
-      '@firebase/firestore',
-      '@firebase/auth',
-      '@firebase/storage',
-      'chart.js'
-    ],
-    serverActions: true
   },
   webpack: (config) => {
     config.optimization.moduleIds = 'named';
