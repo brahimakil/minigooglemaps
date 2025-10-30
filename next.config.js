@@ -1,32 +1,30 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Disable output file tracing to prevent stack overflow
+  experimental: {
+    outputFileTracingRoot: undefined,
+  },
+  outputFileTracing: false,
   images: {
     domains: [
       'lh3.googleusercontent.com',
       'firebasestorage.googleapis.com'
     ],
-    unoptimized: process.env.NODE_ENV === 'production',
+    unoptimized: true,
   },
   staticPageGenerationTimeout: 300,
-  experimental: {
-    serverComponentsExternalPackages: ['firebase'],
-    outputFileTracingIncludes: {
-      '/': ['./src/**/*'],
-    },
-  },
-  // Exclude problematic paths from tracing
-  outputFileTracingExcludes: {
-    '*': [
-      'node_modules/@swc/core-linux-x64-gnu',
-      'node_modules/@swc/core-linux-x64-musl',
-      'node_modules/@esbuild',
-      'node_modules/webpack',
-      'node_modules/rollup',
-      'node_modules/terser',
-    ],
-  },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Externalize firebase to reduce bundle size
+      config.externals = config.externals || [];
+      config.externals.push({
+        'firebase/app': 'commonjs firebase/app',
+        'firebase/auth': 'commonjs firebase/auth',
+        'firebase/firestore': 'commonjs firebase/firestore',
+        'firebase/storage': 'commonjs firebase/storage',
+      });
+    }
     config.optimization.moduleIds = 'named';
     config.optimization.chunkIds = 'named';
     return config;
