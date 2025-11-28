@@ -13,38 +13,34 @@ const firebaseConfig = {
   measurementId: "G-ZW5V9NSMN4"
 };
 
-// Initialize Firebase
+// Initialize Firebase only on client side
 let app: FirebaseApp;
 let db: Firestore;
 let auth: Auth;
 let storage: FirebaseStorage;
 
-// Check if Firebase app is already initialized
-if (!getApps().length) {
-  try {
+const isClient = typeof window !== 'undefined';
+
+if (isClient) {
+  // Client-side initialization
+  if (!getApps().length) {
     app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    storage = getStorage(app);
-  } catch (error) {
-    console.error('[FIREBASE] Error initializing Firebase:', error);
-    // Create dummy objects for SSR
-    if (typeof window === 'undefined') {
-      // @ts-ignore - This is a workaround for SSR
-      app = {} as FirebaseApp;
-      // @ts-ignore
-      db = {} as Firestore;
-      // @ts-ignore
-      auth = {} as Auth;
-      // @ts-ignore
-      storage = {} as FirebaseStorage;
-    }
+  } else {
+    app = getApps()[0];
   }
-} else {
-  app = getApps()[0];
   db = getFirestore(app);
   auth = getAuth(app);
   storage = getStorage(app);
+} else {
+  // Server-side: create dummy objects to prevent errors
+  // @ts-ignore
+  app = {} as FirebaseApp;
+  // @ts-ignore
+  db = {} as Firestore;
+  // @ts-ignore
+  auth = {} as Auth;
+  // @ts-ignore
+  storage = {} as FirebaseStorage;
 }
 
 export { app, db, auth, storage }; 
