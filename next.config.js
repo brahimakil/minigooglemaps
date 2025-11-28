@@ -1,11 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Disable output file tracing to prevent stack overflow
-  experimental: {
-    outputFileTracingRoot: undefined,
-  },
-  outputFileTracing: false,
   images: {
     domains: [
       'lh3.googleusercontent.com',
