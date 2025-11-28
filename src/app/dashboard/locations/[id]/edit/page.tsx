@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation';
 import { doc, getDoc, updateDoc, serverTimestamp, collection, getDocs, query } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { MapPinIcon } from '@/components/icons';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import MediaUploader from '@/components/dashboard/MediaUploader';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 // Import the map component dynamically to avoid SSR issues
-const LocationPicker = dynamic(() => import('@/components/dashboard/LocationPicker'), {
+const LocationPicker = dynamicImport(() => import('@/components/dashboard/LocationPicker'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-[500px] bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse flex items-center justify-center">
