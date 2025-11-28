@@ -5,6 +5,9 @@ import { useRouter, useParams } from 'next/navigation';
 import { collection, query, where, getDocs, doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 // Define the complete Activity interface
 interface Activity {
   id: string;

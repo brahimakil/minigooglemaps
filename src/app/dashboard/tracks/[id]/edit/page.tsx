@@ -8,6 +8,9 @@ import Select, { ClassNamesConfig } from 'react-select';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 interface Activity {
   id: string;
   name: string;

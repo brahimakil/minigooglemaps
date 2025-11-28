@@ -1,10 +1,13 @@
 'use client';
 
-import { useState, useEffect, FormEvent, useRef } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
-import { MapPinIcon } from '@/components/icons';
+import { LayersIcon } from '@/components/icons';
+
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 interface LocationCategoryEditProps {
   params: {
