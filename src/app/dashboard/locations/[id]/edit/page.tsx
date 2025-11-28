@@ -8,6 +8,9 @@ import { MapPinIcon } from '@/components/icons';
 import dynamicImport from 'next/dynamic';
 import MediaUploader from '@/components/dashboard/MediaUploader';
 
+// Force dynamic rendering
+export const runtime = 'edge';
+
 // Import the map component dynamically to avoid SSR issues
 const LocationPicker = dynamicImport(() => import('@/components/dashboard/LocationPicker'), {
   ssr: false,
