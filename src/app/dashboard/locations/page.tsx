@@ -5,10 +5,12 @@ import { collection, getDocs, query, orderBy, limit, deleteDoc, doc } from 'fire
 import { db } from '@/lib/firebase/config';
 import Link from 'next/link';
 import { MapPinIcon, PlusIcon, PencilIcon, TrashIcon } from '@/components/icons';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
+
+export const dynamic = 'force-dynamic';
 
 // Import the map component dynamically to avoid SSR issues
-const LocationsMap = dynamic(() => import('@/components/dashboard/LocationsMap'), {
+const LocationsMap = dynamicImport(() => import('@/components/dashboard/LocationsMap'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-96 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse flex items-center justify-center">

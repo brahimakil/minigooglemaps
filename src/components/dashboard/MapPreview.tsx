@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { collection, getDocs, query, limit } from 'firebase/firestore';
+import { collection, getDocs, query, limit, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
@@ -30,7 +30,7 @@ export default function MapPreview() {
     async function fetchLocations() {
       try {
         // Fetch locations
-        const locationsQuery = query(collection(db, 'locations'), limit(10));
+        const locationsQuery = query(collection(db, 'locations'), orderBy('latitude'), limit(10));
         const locationsSnapshot = await getDocs(locationsQuery);
         
         const locationsData = locationsSnapshot.docs.map(doc => {
@@ -48,7 +48,7 @@ export default function MapPreview() {
         .filter(Boolean) as Location[];
         
         // Fetch activities with locations
-        const activitiesQuery = query(collection(db, 'activities'), limit(10));
+        const activitiesQuery = query(collection(db, 'activities'), orderBy('latitude'), limit(10));
         const activitiesSnapshot = await getDocs(activitiesQuery);
         
         const activitiesWithLocation = activitiesSnapshot.docs

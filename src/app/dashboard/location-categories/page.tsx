@@ -6,6 +6,8 @@ import { db } from '@/lib/firebase/config';
 import Link from 'next/link';
 import { LayersIcon, PlusIcon, PencilIcon, TrashIcon } from '@/components/icons';
 
+export const dynamic = 'force-dynamic';
+
 interface LocationCategory {
   id: string;
   name: string;

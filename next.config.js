@@ -15,16 +15,6 @@ const nextConfig = {
   },
   staticPageGenerationTimeout: 300,
   webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Externalize firebase to reduce bundle size
-      config.externals = config.externals || [];
-      config.externals.push({
-        'firebase/app': 'commonjs firebase/app',
-        'firebase/auth': 'commonjs firebase/auth',
-        'firebase/firestore': 'commonjs firebase/firestore',
-        'firebase/storage': 'commonjs firebase/storage',
-      });
-    }
     config.optimization.moduleIds = 'named';
     config.optimization.chunkIds = 'named';
     return config;

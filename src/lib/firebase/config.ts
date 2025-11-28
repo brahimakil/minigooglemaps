@@ -13,9 +13,6 @@ const firebaseConfig = {
   measurementId: "G-ZW5V9NSMN4"
 };
 
-console.log('[TRACE] Initializing Firebase app instance');
-console.log('[TRACE] Firebase apps count:', getApps().length);
-
 // Initialize Firebase
 let app: FirebaseApp;
 let db: Firestore;
@@ -25,7 +22,6 @@ let storage: FirebaseStorage;
 // Check if Firebase app is already initialized
 if (!getApps().length) {
   try {
-    console.log('[FIREBASE] Initializing new Firebase app instance');
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
@@ -34,7 +30,6 @@ if (!getApps().length) {
     console.error('[FIREBASE] Error initializing Firebase:', error);
     // Create dummy objects for SSR
     if (typeof window === 'undefined') {
-      console.log('[FIREBASE] Creating dummy app for SSR');
       // @ts-ignore - This is a workaround for SSR
       app = {} as FirebaseApp;
       // @ts-ignore
@@ -46,7 +41,6 @@ if (!getApps().length) {
     }
   }
 } else {
-  console.log('[FIREBASE] Using existing Firebase app instance');
   app = getApps()[0];
   db = getFirestore(app);
   auth = getAuth(app);

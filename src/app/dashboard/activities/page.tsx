@@ -6,6 +6,8 @@ import { db } from '@/lib/firebase/config';
 import Link from 'next/link';
 import { ActivityIcon, PlusIcon, PencilIcon, TrashIcon } from '@/components/icons';
 
+export const dynamic = 'force-dynamic';
+
 interface Activity {
   id: string;
   name: string;

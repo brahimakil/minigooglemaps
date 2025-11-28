@@ -7,6 +7,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { PlusIcon, PencilIcon, TrashIcon } from '@/components/icons';
 
+export const dynamic = 'force-dynamic';
+
 interface Track {
   id: string;
   name: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy, limit, getCountFromServer } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { MapPinIcon, UsersIcon, CalendarIcon, ActivityIcon, TagIcon, MapIcon, UserIcon } from '@/components/icons';
 import Link from 'next/link';
@@ -31,16 +31,16 @@ export default function Dashboard() {
     async function fetchDashboardData() {
       try {
         // Fetch stats
-        const appUsersSnapshot = await getDocs(collection(db, 'appUsers'));
-        const activitiesSnapshot = await getDocs(collection(db, 'activities'));
-        const locationsSnapshot = await getDocs(collection(db, 'locations'));
-        const activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
+        const appUsersSnapshot = await getCountFromServer(collection(db, 'appUsers'));
+        const activitiesSnapshot = await getCountFromServer(collection(db, 'activities'));
+        const locationsSnapshot = await getCountFromServer(collection(db, 'locations'));
+        const activityTypesSnapshot = await getCountFromServer(collection(db, 'activityTypes'));
 
         setStats({
-          users: appUsersSnapshot.size,
-          activities: activitiesSnapshot.size,
-          locations: locationsSnapshot.size,
-          activityTypes: activityTypesSnapshot.size,
+          users: appUsersSnapshot.data().count,
+          activities: activitiesSnapshot.data().count,
+          locations: locationsSnapshot.data().count,
+          activityTypes: activityTypesSnapshot.data().count,
         });
 
         // Fetch recent activities
