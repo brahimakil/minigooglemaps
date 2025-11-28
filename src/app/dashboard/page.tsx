@@ -72,8 +72,8 @@ export default function Dashboard() {
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Dashboard</h1>
         
         {/* Stats */}
-        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-3">
+          {/* <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -96,7 +96,7 @@ export default function Dashboard() {
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
             <div className="p-5">

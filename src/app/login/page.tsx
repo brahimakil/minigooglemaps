@@ -139,8 +139,7 @@ export default function Login() {
             </button>
           </div>
           
-          {/* Tour Guide Request Button */}
-          <div className="mt-4 text-center">
+          {/* <div className="mt-4 text-center">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Are you a tour guide?{' '}
               <Link 
@@ -150,7 +149,7 @@ export default function Login() {
                 Request a tour guide account
               </Link>
             </p>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

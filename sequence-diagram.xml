@@ -1,0 +1,499 @@
+<mxfile host="app.diagrams.net" modified="2025-11-07T00:00:00.000Z" agent="Mozilla/5.0" version="22.0.0" type="device">
+  <diagram name="Mini Google Maps Sequence Diagram" id="seq_diagram1">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="seq_root0" />
+        <mxCell id="seq_root1" parent="seq_root0" />
+        
+        <!-- Title -->
+        <mxCell id="seq_title1" value="User Registration Flow" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="600" y="20" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Actors/Objects - User Registration -->
+        <mxCell id="seq_actor1" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="seq_root1">
+          <mxGeometry x="100" y="80" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj1" value="Client App" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="320" y="80" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj2" value="Auth Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="560" y="80" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj3" value="Firebase" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="800" y="80" width="100" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Lifelines User Registration -->
+        <mxCell id="seq_life1" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="115" y="600" as="sourcePoint" />
+            <mxPoint x="115" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life2" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="600" as="sourcePoint" />
+            <mxPoint x="370" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life3" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="610" y="600" as="sourcePoint" />
+            <mxPoint x="610" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life4" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="850" y="600" as="sourcePoint" />
+            <mxPoint x="850" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Messages User Registration -->
+        <mxCell id="seq_msg1" value="1: Enter credentials" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="115" y="180" as="sourcePoint" />
+            <mxPoint x="370" y="180" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg2" value="2: Signup request" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="210" as="sourcePoint" />
+            <mxPoint x="610" y="210" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg3" value="3: Create user account" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="240" as="sourcePoint" />
+            <mxPoint x="850" y="240" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg4" value="4: User created" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="850" y="270" as="sourcePoint" />
+            <mxPoint x="610" y="270" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg5" value="5: Generate auth token" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="300" as="sourcePoint" />
+            <mxPoint x="850" y="300" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg6" value="6: Auth token" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="850" y="330" as="sourcePoint" />
+            <mxPoint x="610" y="330" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg7" value="7: Login success" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="360" as="sourcePoint" />
+            <mxPoint x="370" y="360" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg8" value="8: Redirect to dashboard" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="390" as="sourcePoint" />
+            <mxPoint x="115" y="390" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Activation boxes -->
+        <mxCell id="seq_act1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="365" y="175" width="10" height="225" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_act2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="605" y="205" width="10" height="165" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_act3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="845" y="235" width="10" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- Separator -->
+        <mxCell id="seq_sep1" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;strokeColor=#000000;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="450" as="sourcePoint" />
+            <mxPoint x="950" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Title 2 -->
+        <mxCell id="seq_title2" value="View Activities on Map" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="600" y="470" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Actors/Objects - View Activities -->
+        <mxCell id="seq_actor2" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="seq_root1">
+          <mxGeometry x="100" y="530" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj4" value="Map Component" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="320" y="530" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj5" value="Activity Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="560" y="530" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj6" value="Firestore DB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="800" y="530" width="100" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Lifelines View Activities -->
+        <mxCell id="seq_life5" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="115" y="920" as="sourcePoint" />
+            <mxPoint x="115" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life6" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="920" as="sourcePoint" />
+            <mxPoint x="370" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life7" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="610" y="920" as="sourcePoint" />
+            <mxPoint x="610" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life8" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="850" y="920" as="sourcePoint" />
+            <mxPoint x="850" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Messages View Activities -->
+        <mxCell id="seq_msg9" value="1: Open map view" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="115" y="630" as="sourcePoint" />
+            <mxPoint x="370" y="630" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg10" value="2: Request activities" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="660" as="sourcePoint" />
+            <mxPoint x="610" y="660" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg11" value="3: Query activities" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="690" as="sourcePoint" />
+            <mxPoint x="850" y="690" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg12" value="4: Activities data" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="850" y="720" as="sourcePoint" />
+            <mxPoint x="610" y="720" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg13" value="5: Process and format" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="750" as="sourcePoint" />
+            <mxPoint x="370" y="750" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg14" value="6: Display markers" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="780" as="sourcePoint" />
+            <mxPoint x="115" y="780" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg15" value="7: Click activity marker" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="115" y="810" as="sourcePoint" />
+            <mxPoint x="370" y="810" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg16" value="8: Show activity details" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="840" as="sourcePoint" />
+            <mxPoint x="115" y="840" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Activation boxes View Activities -->
+        <mxCell id="seq_act4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="365" y="625" width="10" height="225" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_act5" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="605" y="655" width="10" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_act6" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="845" y="685" width="10" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- Separator 2 -->
+        <mxCell id="seq_sep2" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;strokeColor=#000000;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="960" as="sourcePoint" />
+            <mxPoint x="950" y="960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Title 3 -->
+        <mxCell id="seq_title3" value="Write Review for Activity" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="600" y="980" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Actors/Objects - Write Review -->
+        <mxCell id="seq_actor3" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="seq_root1">
+          <mxGeometry x="100" y="1040" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj7" value="Review Form" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="320" y="1040" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj8" value="Review Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="560" y="1040" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj9" value="Firestore DB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="800" y="1040" width="100" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Lifelines Write Review -->
+        <mxCell id="seq_life9" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="115" y="1400" as="sourcePoint" />
+            <mxPoint x="115" y="1110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life10" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="1400" as="sourcePoint" />
+            <mxPoint x="370" y="1110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life11" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="610" y="1400" as="sourcePoint" />
+            <mxPoint x="610" y="1110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life12" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="850" y="1400" as="sourcePoint" />
+            <mxPoint x="850" y="1110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Messages Write Review -->
+        <mxCell id="seq_msg17" value="1: Open review form" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="115" y="1140" as="sourcePoint" />
+            <mxPoint x="370" y="1140" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg18" value="2: Enter rating &amp; comment" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="115" y="1170" as="sourcePoint" />
+            <mxPoint x="370" y="1170" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg19" value="3: Submit review" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="1200" as="sourcePoint" />
+            <mxPoint x="610" y="1200" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg20" value="4: Validate review data" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="1230" as="sourcePoint" />
+            <mxPoint x="615" y="1250" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="640" y="1230" />
+              <mxPoint x="640" y="1250" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg21" value="5: Save review" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="1270" as="sourcePoint" />
+            <mxPoint x="850" y="1270" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg22" value="6: Review saved" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="850" y="1300" as="sourcePoint" />
+            <mxPoint x="610" y="1300" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg23" value="7: Success confirmation" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="1330" as="sourcePoint" />
+            <mxPoint x="370" y="1330" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg24" value="8: Show success message" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="1360" as="sourcePoint" />
+            <mxPoint x="115" y="1360" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Activation boxes Write Review -->
+        <mxCell id="seq_act7" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="365" y="1135" width="10" height="235" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_act8" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="605" y="1195" width="10" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_act9" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="845" y="1265" width="10" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- Separator 3 -->
+        <mxCell id="seq_sep3" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;strokeColor=#000000;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="1440" as="sourcePoint" />
+            <mxPoint x="950" y="1440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Title 4 -->
+        <mxCell id="seq_title4" value="Admin Manages Activity" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="600" y="1460" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Actors/Objects - Admin Manages Activity -->
+        <mxCell id="seq_actor4" value="Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="seq_root1">
+          <mxGeometry x="100" y="1520" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj10" value="Dashboard" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="320" y="1520" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj11" value="Activity Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="560" y="1520" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_obj12" value="Firestore DB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1" vertex="1" parent="seq_root1">
+          <mxGeometry x="800" y="1520" width="100" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Lifelines Admin Manages Activity -->
+        <mxCell id="seq_life13" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="115" y="1900" as="sourcePoint" />
+            <mxPoint x="115" y="1590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life14" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="1900" as="sourcePoint" />
+            <mxPoint x="370" y="1590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life15" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="610" y="1900" as="sourcePoint" />
+            <mxPoint x="610" y="1590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_life16" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="850" y="1900" as="sourcePoint" />
+            <mxPoint x="850" y="1590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Messages Admin Manages Activity -->
+        <mxCell id="seq_msg25" value="1: Navigate to activities" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="115" y="1620" as="sourcePoint" />
+            <mxPoint x="370" y="1620" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg26" value="2: Edit activity" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="115" y="1650" as="sourcePoint" />
+            <mxPoint x="370" y="1650" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg27" value="3: Update activity data" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="1680" as="sourcePoint" />
+            <mxPoint x="610" y="1680" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg28" value="4: Validate changes" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="1710" as="sourcePoint" />
+            <mxPoint x="615" y="1730" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="640" y="1710" />
+              <mxPoint x="640" y="1730" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg29" value="5: Update in database" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="1750" as="sourcePoint" />
+            <mxPoint x="850" y="1750" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg30" value="6: Update confirmed" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="850" y="1780" as="sourcePoint" />
+            <mxPoint x="610" y="1780" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg31" value="7: Success response" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="610" y="1810" as="sourcePoint" />
+            <mxPoint x="370" y="1810" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="seq_msg32" value="8: Refresh activity list" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" edge="1" parent="seq_root1">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="370" y="1840" as="sourcePoint" />
+            <mxPoint x="115" y="1840" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Activation boxes Admin Manages Activity -->
+        <mxCell id="seq_act10" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="365" y="1615" width="10" height="235" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_act11" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="605" y="1675" width="10" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="seq_act12" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="seq_root1">
+          <mxGeometry x="845" y="1745" width="10" height="45" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

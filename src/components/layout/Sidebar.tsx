@@ -1,17 +1,18 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   HomeIcon, 
-  UserIcon, 
+  // UserIcon, 
   ActivityIcon, 
   TagIcon, 
   MapIcon, 
   LayersIcon, 
   CalendarIcon, 
   BarChartIcon,
-  UsersIcon 
+  // UsersIcon 
 } from '@/components/icons';
 
 // Add a tour guide icon
@@ -51,23 +52,117 @@ function TrackIcon({ className }: { className?: string }) {
   );
 }
 
+function ChevronDownIcon({ className }: { className?: string }) {
+  return (
+    <svg 
+      className={className} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon({ className }: { className?: string }) {
+  return (
+    <svg 
+      className={className} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  );
+}
+
+type NavItem = {
+  name: string;
+  href?: string;
+  icon: any;
+  children?: { name: string; href: string; icon: any }[];
+};
+
 export default function Sidebar() {
   const pathname = usePathname();
-  
-  const navigation = [
+  const [openMenus, setOpenMenus] = useState<string[]>([]);
+
+  const navigation: NavItem[] = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-    { name: 'Users', href: '/dashboard/users', icon: UserIcon },
-    { name: 'User Activities', href: '/dashboard/user-activities', icon: UsersIcon },
-    { name: 'Activities', href: '/dashboard/activities', icon: ActivityIcon },
-    { name: 'Activity Types', href: '/dashboard/activity-types', icon: TagIcon },
-    { name: 'Locations', href: '/dashboard/locations', icon: MapIcon },
-    { name: 'Location Categories', href: '/dashboard/location-categories', icon: LayersIcon },
-    { name: 'Tracks', href: '/dashboard/tracks', icon: TrackIcon },
-    { name: 'Tour Guides', href: '/dashboard/tour-guides', icon: TourGuideIcon },
-    { name: 'Guide Requests', href: '/dashboard/tour-guide-requests', icon: TourGuideIcon },
-    { name: 'Calendar', href: '/dashboard/calendar', icon: CalendarIcon },
-    { name: 'Statistics', href: '/dashboard/statistics', icon: BarChartIcon },
+    { 
+      name: 'Activities', 
+      icon: ActivityIcon,
+      children: [
+        { name: 'Activities', href: '/dashboard/activities', icon: ActivityIcon },
+        { name: 'Activity Types', href: '/dashboard/activity-types', icon: TagIcon },
+      ]
+    },
+    { 
+      name: 'Locations', 
+      icon: MapIcon,
+      children: [
+        { name: 'Locations', href: '/dashboard/locations', icon: MapIcon },
+        { name: 'Location Categories', href: '/dashboard/location-categories', icon: LayersIcon },
+        { name: 'Tracks', href: '/dashboard/tracks', icon: TrackIcon },
+      ]
+    },
+    // { 
+    //   name: 'Tour Guides', 
+    //   icon: TourGuideIcon,
+    //   children: [
+    //     { name: 'Tour Guides', href: '/dashboard/tour-guides', icon: TourGuideIcon },
+    //     { name: 'Guide Requests', href: '/dashboard/tour-guide-requests', icon: TourGuideIcon },
+    //   ]
+    // },
+    { 
+      name: 'Statistics', 
+      icon: BarChartIcon,
+      children: [
+        { name: 'Calendar', href: '/dashboard/calendar', icon: CalendarIcon },
+        { name: 'Statistics', href: '/dashboard/statistics', icon: BarChartIcon },
+      ]
+    },
+    // { 
+    //   name: 'Users', 
+    //   icon: UsersIcon, // Assuming UsersIcon would be imported if uncommented
+    //   children: [
+    //     { name: 'Users', href: '/dashboard/users', icon: UsersIcon },
+    //     { name: 'User Activities', href: '/dashboard/user-activities', icon: ActivityIcon },
+    //   ]
+    // },
   ];
+
+  // Automatically open menus if a child is active
+  useEffect(() => {
+    const newOpenMenus = [...openMenus];
+    for (const item of navigation) {
+      if (item.children) {
+        const hasActiveChild = item.children.some(child => pathname === child.href || pathname?.startsWith(child.href + '/'));
+        if (hasActiveChild && !newOpenMenus.includes(item.name)) {
+          newOpenMenus.push(item.name);
+        }
+      }
+    }
+    if (newOpenMenus.length !== openMenus.length) {
+      setOpenMenus(newOpenMenus);
+    }
+  }, [pathname]);
+
+  const toggleMenu = (name: string) => {
+    setOpenMenus(prev => 
+      prev.includes(name) 
+        ? prev.filter(item => item !== name) 
+        : [...prev, name]
+    );
+  };
 
   return (
     <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
@@ -83,13 +178,71 @@ export default function Sidebar() {
           </div>
           <nav className="mt-5 flex-1 px-2 space-y-1">
             {navigation.map((item) => {
-              const isActive = pathname === item.href;
               const Icon = item.icon;
+              
+              if (item.children) {
+                const isOpen = openMenus.includes(item.name);
+                const isActiveParent = item.children.some(child => pathname === child.href || pathname?.startsWith(child.href + '/'));
+                
+                return (
+                  <div key={item.name} className="space-y-1">
+                    <button
+                      onClick={() => toggleMenu(item.name)}
+                      className={`w-full group flex items-center justify-between px-2 py-2 text-sm font-medium rounded-md ${
+                        isActiveParent
+                          ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-200'
+                          : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <Icon
+                          className={`mr-3 flex-shrink-0 h-5 w-5 ${
+                            isActiveParent
+                              ? 'text-indigo-500 dark:text-indigo-300'
+                              : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-500 dark:group-hover:text-gray-400'
+                          }`}
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </div>
+                      {isOpen ? (
+                        <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+                      ) : (
+                        <ChevronRightIcon className="h-4 w-4 text-gray-400" />
+                      )}
+                    </button>
+                    
+                    {isOpen && (
+                      <div className="space-y-1 pl-10">
+                        {item.children.map((child) => {
+                          const isChildActive = pathname === child.href;
+                          
+                          return (
+                            <Link
+                              key={child.name}
+                              href={child.href}
+                              className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
+                                isChildActive
+                                  ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-200'
+                                  : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                              }`}
+                            >
+                              {child.name}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              const isActive = pathname === item.href;
               
               return (
                 <Link
                   key={item.name}
-                  href={item.href}
+                  href={item.href!}
                   className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
                     isActive
                       ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-200'
