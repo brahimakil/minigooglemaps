@@ -8,9 +8,6 @@ import Select, { ClassNamesConfig } from 'react-select';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-// Force dynamic rendering
-export const runtime = 'edge';
-
 interface Activity {
   id: string;
   name: string;

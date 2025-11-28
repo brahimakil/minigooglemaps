@@ -6,9 +6,6 @@ import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { MapPinIcon } from '@/components/icons';
 
-// Force dynamic rendering
-export const runtime = 'edge';
-
 interface LocationCategoryEditProps {
   params: {
     id: string;

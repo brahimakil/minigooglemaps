@@ -7,9 +7,6 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebase/config';
 import { TagIcon } from '@/components/icons';
 
-// Force dynamic rendering
-export const runtime = 'edge';
-
 interface ActivityTypeEditProps {
   params: {
     id: string;

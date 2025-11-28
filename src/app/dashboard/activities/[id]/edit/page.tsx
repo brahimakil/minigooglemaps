@@ -5,9 +5,6 @@ import { useRouter, useParams } from 'next/navigation';
 import { collection, query, where, getDocs, doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 
-// Force dynamic rendering
-export const runtime = 'edge';
-
 // Define the complete Activity interface
 interface Activity {
   id: string;
