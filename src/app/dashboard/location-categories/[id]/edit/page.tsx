@@ -6,9 +6,6 @@ import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { MapPinIcon } from '@/components/icons';
 
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
-
 interface LocationCategoryEditProps {
   params: {
     id: string;

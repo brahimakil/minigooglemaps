@@ -7,9 +7,6 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebase/config';
 import { TagIcon } from '@/components/icons';
 
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
-
 interface ActivityTypeEditProps {
   params: {
     id: string;
