@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
-import { LayersIcon } from '@/components/icons';
+import { MapPinIcon } from '@/components/icons';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;

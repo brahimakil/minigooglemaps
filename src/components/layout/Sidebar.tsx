@@ -52,7 +52,7 @@ function TrackIcon({ className }: { className?: string }) {
   );
 }
 
-function ChevronDownIcon({ className }: { className?: string }) {
+function ChevronDownIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg 
       className={className} 
@@ -68,7 +68,7 @@ function ChevronDownIcon({ className }: { className?: string }) {
   );
 }
 
-function ChevronRightIcon({ className }: { className?: string }) {
+function ChevronRightIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg 
       className={className} 

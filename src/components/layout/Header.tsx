@@ -24,7 +24,7 @@ import {
 } from '@/components/icons';
 
 // Add a tour guide icon
-function TourGuideIcon({ className }: { className?: string }) {
+function TourGuideIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg 
       className={className} 
@@ -42,7 +42,7 @@ function TourGuideIcon({ className }: { className?: string }) {
 }
 
 // Add a track icon
-function TrackIcon({ className }: { className?: string }) {
+function TrackIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg 
       className={className} 
@@ -60,7 +60,7 @@ function TrackIcon({ className }: { className?: string }) {
   );
 }
 
-function ChevronDownIcon({ className }: { className?: string }) {
+function ChevronDownIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg 
       className={className} 
@@ -76,7 +76,7 @@ function ChevronDownIcon({ className }: { className?: string }) {
   );
 }
 
-function ChevronRightIcon({ className }: { className?: string }) {
+function ChevronRightIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg 
       className={className} 
