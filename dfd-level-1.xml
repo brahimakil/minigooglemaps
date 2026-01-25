@@ -1,0 +1,457 @@
+<mxfile host="app.diagrams.net" modified="2026-01-13T05:48:00.000Z" agent="Mozilla/5.0" version="26.0.0" type="device">
+  <diagram id="dfd-level-1" name="DFD Level 1 - Detailed Data Flow">
+    <mxGraphModel dx="1800" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- ==================== TITLE ==================== -->
+        <mxCell id="title" value="DFD Level 1 - MiniGoogleMaps System" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="600" y="20" width="400" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== PROCESSES (Circles) ==================== -->
+        
+        <!-- Process 1.0: User Authentication -->
+        <mxCell id="process_1" value="1.0&#xa;&#xa;User&#xa;Authentication" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="200" y="150" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 2.0: Location Management -->
+        <mxCell id="process_2" value="2.0&#xa;&#xa;Location&#xa;Management" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="500" y="150" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 3.0: Activity Management -->
+        <mxCell id="process_3" value="3.0&#xa;&#xa;Activity&#xa;Management" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="800" y="150" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 4.0: Map Display -->
+        <mxCell id="process_4" value="4.0&#xa;&#xa;Map&#xa;Display" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1100" y="150" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 5.0: Review Management -->
+        <mxCell id="process_5" value="5.0&#xa;&#xa;Review&#xa;Management" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="200" y="420" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 6.0: Tour Guide Processing -->
+        <mxCell id="process_6" value="6.0&#xa;&#xa;Tour Guide&#xa;Processing" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="500" y="420" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 7.0: User/Admin Management -->
+        <mxCell id="process_7" value="7.0&#xa;&#xa;User/Admin&#xa;Management" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="800" y="420" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 8.0: Statistics & Reports -->
+        <mxCell id="process_8" value="8.0&#xa;&#xa;Statistics&#xa;&amp; Reports" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1100" y="420" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 9.0: Category Management -->
+        <mxCell id="process_9" value="9.0&#xa;&#xa;Category&#xa;Management" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1400" y="280" width="120" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== DATA STORES (Open-ended Rectangles) ==================== -->
+        
+        <!-- D1: Users -->
+        <mxCell id="store_users" value="D1    Users" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="160" y="700" width="200" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- D2: Locations -->
+        <mxCell id="store_locations" value="D2    Locations" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="400" y="700" width="200" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- D3: Activities -->
+        <mxCell id="store_activities" value="D3    Activities" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="640" y="700" width="200" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- D4: Reviews -->
+        <mxCell id="store_reviews" value="D4    Reviews" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="880" y="700" width="200" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- D5: TourGuideRequests -->
+        <mxCell id="store_tg_requests" value="D5    TourGuideRequests" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="1120" y="700" width="200" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- D6: ActivityTypes -->
+        <mxCell id="store_activity_types" value="D6    ActivityTypes" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="400" y="780" width="200" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- D7: LocationCategories -->
+        <mxCell id="store_loc_categories" value="D7    LocationCategories" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=11;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="640" y="780" width="200" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== EXTERNAL ENTITIES ==================== -->
+        
+        <!-- User (Mobile App) -->
+        <mxCell id="entity_user" value="User&#xa;(Mobile App)" style="shape=rectangle;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="40" y="80" width="100" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Admin (Web Dashboard) -->
+        <mxCell id="entity_admin" value="Admin&#xa;(Web Dashboard)" style="shape=rectangle;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="40" y="550" width="100" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Tour Guide Applicant -->
+        <mxCell id="entity_tour_guide" value="Tour Guide&#xa;Applicant" style="shape=rectangle;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="510" y="580" width="100" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- OpenStreetMap API -->
+        <mxCell id="entity_osm" value="OpenStreetMap&#xa;API" style="shape=rectangle;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=11;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1110" y="60" width="100" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== DATA FLOWS ==================== -->
+        
+        <!-- User → Process 1 (Authentication) -->
+        <mxCell id="flow_user_auth" value="Login/Register" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_user" target="process_1" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 1 → User (Auth Response) -->
+        <mxCell id="flow_auth_response" value="Auth Token" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#82b366;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_1" target="entity_user" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="130"/>
+              <mxPoint x="90" y="130"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 1 ↔ D1 (Users) -->
+        <mxCell id="flow_p1_d1" value="User Credentials" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#666666;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_1" target="store_users" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- User → Process 2 (Browse Locations) -->
+        <mxCell id="flow_user_loc" value="Browse Request" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_user" target="process_2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="90" y="150"/>
+              <mxPoint x="350" y="150"/>
+              <mxPoint x="350" y="180"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 2 → User (Location Data) -->
+        <mxCell id="flow_loc_user" value="Location List" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#82b366;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_2" target="entity_user" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="110"/>
+              <mxPoint x="90" y="110"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 2 ↔ D2 (Locations) -->
+        <mxCell id="flow_p2_d2" value="Location Data" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#666666;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_2" target="store_locations" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- User → Process 3 (Activities) -->
+        <mxCell id="flow_user_act" value="View Activities" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_user" target="process_3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="90" y="70"/>
+              <mxPoint x="860" y="70"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 3 → User (Activity Data) -->
+        <mxCell id="flow_act_user" value="Activity List" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#82b366;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_3" target="entity_user" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="90"/>
+              <mxPoint x="100" y="90"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 3 ↔ D3 (Activities) -->
+        <mxCell id="flow_p3_d3" value="Activity Data" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#666666;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_3" target="store_activities" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="640"/>
+              <mxPoint x="740" y="640"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 4 ↔ OpenStreetMap -->
+        <mxCell id="flow_p4_osm" value="Map Tiles&#xa;Geocoding" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#d79b00;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_4" target="entity_osm" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 4 → User (Map Display) -->
+        <mxCell id="flow_p4_user" value="Interactive Map" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#82b366;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_4" target="entity_user" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1160" y="50"/>
+              <mxPoint x="90" y="50"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 2 → Process 4 (Location coords) -->
+        <mxCell id="flow_p2_p4" value="Location Coords" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#b85450;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_2" target="process_4" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 3 → Process 4 (Activity coords) -->
+        <mxCell id="flow_p3_p4" value="Activity Coords" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#b85450;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_3" target="process_4" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- User → Process 5 (Submit Review) -->
+        <mxCell id="flow_user_review" value="Submit Review" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_user" target="process_5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="460"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 5 ↔ D4 (Reviews) -->
+        <mxCell id="flow_p5_d4" value="Review Data" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#666666;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_5" target="store_reviews" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="650"/>
+              <mxPoint x="980" y="650"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Tour Guide → Process 6 -->
+        <mxCell id="flow_tg_p6" value="Application Form" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_tour_guide" target="process_6" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 6 → Tour Guide (Status) -->
+        <mxCell id="flow_p6_tg" value="Status Update" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#82b366;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_6" target="entity_tour_guide" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="560"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 6 ↔ D5 (TourGuideRequests) -->
+        <mxCell id="flow_p6_d5" value="Request Data" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#666666;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_6" target="store_tg_requests" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Admin → Process 6 (Approve/Reject) -->
+        <mxCell id="flow_admin_p6" value="Approve/Reject" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_admin" target="process_6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="90" y="530"/>
+              <mxPoint x="400" y="530"/>
+              <mxPoint x="400" y="470"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Admin → Process 7 (User Management) -->
+        <mxCell id="flow_admin_p7" value="Manage Users" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_admin" target="process_7" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 7 ↔ D1 (Users) -->
+        <mxCell id="flow_p7_d1" value="User Data" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#666666;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_7" target="store_users" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="620"/>
+              <mxPoint x="260" y="620"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Admin → Process 2 (Manage Locations) -->
+        <mxCell id="flow_admin_p2" value="CRUD Locations" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_admin" target="process_2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="320"/>
+              <mxPoint x="450" y="320"/>
+              <mxPoint x="450" y="200"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Admin → Process 3 (Manage Activities) -->
+        <mxCell id="flow_admin_p3" value="CRUD Activities" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_admin" target="process_3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="30" y="300"/>
+              <mxPoint x="30" y="300"/>
+              <mxPoint x="700" y="300"/>
+              <mxPoint x="700" y="200"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Admin → Process 8 (View Stats) -->
+        <mxCell id="flow_admin_p8" value="Request Stats" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_admin" target="process_8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="90" y="610"/>
+              <mxPoint x="1050" y="610"/>
+              <mxPoint x="1050" y="470"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 8 → Admin (Reports) -->
+        <mxCell id="flow_p8_admin" value="Reports&#xa;Charts" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#82b366;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_8" target="entity_admin" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1160" y="630"/>
+              <mxPoint x="140" y="630"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 8 reads from multiple data stores -->
+        <mxCell id="flow_p8_d1" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1;strokeColor=#999999;dashed=1;" parent="1" source="store_users" target="process_8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="670"/>
+              <mxPoint x="1160" y="670"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="flow_p8_d2" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1;strokeColor=#999999;dashed=1;" parent="1" source="store_locations" target="process_8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="660"/>
+              <mxPoint x="1160" y="660"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="flow_p8_d3" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1;strokeColor=#999999;dashed=1;" parent="1" source="store_activities" target="process_8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="655"/>
+              <mxPoint x="1160" y="655"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 9 ↔ D6 (ActivityTypes) -->
+        <mxCell id="flow_p9_d6" value="Activity Type Data" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#666666;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_9" target="store_activity_types" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Process 9 ↔ D7 (LocationCategories) -->
+        <mxCell id="flow_p9_d7" value="Location Category Data" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#666666;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="process_9" target="store_loc_categories" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1460" y="600"/>
+              <mxPoint x="740" y="600"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Admin → Process 9 (Manage Categories) -->
+        <mxCell id="flow_admin_p9" value="Manage Categories" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=9;labelBackgroundColor=#ffffff;" parent="1" source="entity_admin" target="process_9" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="30" y="340"/>
+              <mxPoint x="1460" y="340"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 3 reads from D6 -->
+        <mxCell id="flow_p3_d6" value="Types" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1;strokeColor=#999999;fontSize=8;labelBackgroundColor=#ffffff;" parent="1" source="store_activity_types" target="process_3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="760"/>
+              <mxPoint x="930" y="760"/>
+              <mxPoint x="930" y="250"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Process 2 reads from D7 -->
+        <mxCell id="flow_p2_d7" value="Categories" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeWidth=1;strokeColor=#999999;fontSize=8;labelBackgroundColor=#ffffff;" parent="1" source="store_loc_categories" target="process_2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="850"/>
+              <mxPoint x="370" y="850"/>
+              <mxPoint x="370" y="200"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- ==================== LEGEND ==================== -->
+        <mxCell id="legend_box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fillOpacity=90;" parent="1" vertex="1">
+          <mxGeometry x="1340" y="700" width="280" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_title" value="LEGEND" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1440" y="705" width="80" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_process" value="1.0" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1355" y="730" width="50" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_process_text" value="Process" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1415" y="730" width="80" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_entity" value="Entity" style="shape=rectangle;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1355" y="765" width="50" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_entity_text" value="External Entity" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1415" y="760" width="100" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_store" value="D1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1355" y="795" width="50" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_store_text" value="Data Store" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1415" y="795" width="80" height="25" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_arrow" value="" style="endArrow=block;html=1;strokeWidth=2;strokeColor=#6c8ebf;endFill=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1500" y="742" as="sourcePoint"/>
+            <mxPoint x="1560" y="742" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_arrow_text" value="Data Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1500" y="750" width="70" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_arrow2" value="" style="endArrow=block;html=1;strokeWidth=1;strokeColor=#999999;endFill=1;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1500" y="807" as="sourcePoint"/>
+            <mxPoint x="1560" y="807" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_arrow2_text" value="Read Only" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1500" y="815" width="70" height="20" as="geometry"/>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

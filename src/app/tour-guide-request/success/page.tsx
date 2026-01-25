@@ -47,7 +47,7 @@ export default function TourGuideRequestSuccess() {
             Application Submitted!
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Thank you for applying to be a tour guide. Our team will review your application and contact you via email.
+            Thank you for applying to be a tour guide.
           </p>
         </div>
         

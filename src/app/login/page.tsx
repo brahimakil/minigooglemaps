@@ -74,7 +74,7 @@ export default function Login() {
           {theme === 'light' ? <MoonIcon size={20} /> : <SunIcon size={20} />}
         </button>
       </div>
-      
+
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="mx-auto h-12 w-12 bg-indigo-600 rounded-md flex items-center justify-center">
@@ -90,14 +90,14 @@ export default function Login() {
             </Link>
           </p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
             <div className="rounded-md bg-red-50 dark:bg-red-900/30 p-4 border border-red-200 dark:border-red-900">
               <p className="text-sm text-red-600 dark:text-red-200">{error}</p>
             </div>
           )}
-          
+
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">Email address</label>
@@ -138,18 +138,18 @@ export default function Login() {
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
-          
-          {/* <div className="mt-4 text-center">
+
+          <div className="mt-4 text-center">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Are you a tour guide?{' '}
-              <Link 
-                href="/tour-guide-request" 
+              <Link
+                href="/tour-guide-request"
                 className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
               >
                 Request a tour guide account
               </Link>
             </p>
-          </div> */}
+          </div>
         </form>
       </div>
     </div>

@@ -1,0 +1,304 @@
+<mxfile host="app.diagrams.net" modified="2026-01-13T05:53:00.000Z" agent="Mozilla/5.0" version="26.0.0" type="device">
+  <diagram id="uml-class-diagram" name="UML Class Diagram">
+    <mxGraphModel dx="1800" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- ==================== TITLE ==================== -->
+        <mxCell id="title" value="UML Class Diagram - MiniGoogleMaps System" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="550" y="20" width="450" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== USER CLASS ==================== -->
+        <mxCell id="class_user" value="&lt;b&gt;User&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#dae8fc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="80" y="100" width="200" height="230" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_user_attrs" value="- id: String&#xa;- displayName: String&#xa;- email: String&#xa;- phoneNumber: String&#xa;- photoURL: String&#xa;- createdAt: Timestamp&#xa;- updatedAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_user" vertex="1">
+          <mxGeometry y="30" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_user_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_user" vertex="1">
+          <mxGeometry y="150" width="200" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_user_methods" value="+ getId(): String&#xa;+ setId(id: String): void&#xa;+ getDisplayName(): String&#xa;+ setDisplayName(name: String): void&#xa;+ getEmail(): String&#xa;+ setEmail(email: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_user" vertex="1">
+          <mxGeometry y="158" width="200" height="72" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== ACTIVITY CLASS ==================== -->
+        <mxCell id="class_activity" value="&lt;b&gt;Activity&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#dae8fc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="380" y="100" width="220" height="340" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_attrs" value="- id: String&#xa;- userId: String&#xa;- locationId: String&#xa;- locationName: String&#xa;- name: String&#xa;- description: String&#xa;- latitude: double&#xa;- longitude: double&#xa;- price: double&#xa;- status: String&#xa;- type: String&#xa;- address: String&#xa;- mainImage: String&#xa;- media: List&lt;String&gt;&#xa;- date: Timestamp&#xa;- createdAt: Timestamp&#xa;- updatedAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_activity" vertex="1">
+          <mxGeometry y="30" width="220" height="230" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_activity" vertex="1">
+          <mxGeometry y="260" width="220" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_methods" value="+ getId(): String&#xa;+ getName(): String&#xa;+ getTitle(): String&#xa;+ getImageUrl(): String&#xa;+ getPrice(): double&#xa;+ getStatus(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_activity" vertex="1">
+          <mxGeometry y="268" width="220" height="72" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== ACTIVITY TYPE CLASS ==================== -->
+        <mxCell id="class_activity_type" value="&lt;b&gt;ActivityType&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#d5e8d4;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#82b366;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="700" y="100" width="200" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_type_attrs" value="- id: String&#xa;- name: String&#xa;- description: String&#xa;- icon: String&#xa;- image: String&#xa;- createdAt: Timestamp&#xa;- updatedAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_activity_type" vertex="1">
+          <mxGeometry y="30" width="200" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_type_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_activity_type" vertex="1">
+          <mxGeometry y="140" width="200" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_type_methods" value="+ getId(): String&#xa;+ getName(): String&#xa;+ getIcon(): String&#xa;+ getImage(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_activity_type" vertex="1">
+          <mxGeometry y="148" width="200" height="52" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== LOCATION CLASS ==================== -->
+        <mxCell id="class_location" value="&lt;b&gt;Location&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#dae8fc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="380" y="500" width="220" height="280" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_location_attrs" value="- id: String&#xa;- name: String&#xa;- address: String&#xa;- category: String&#xa;- description: String&#xa;- latitude: double&#xa;- longitude: double&#xa;- mainImage: String&#xa;- media: List&lt;String&gt;&#xa;- createdAt: Timestamp&#xa;- updatedAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_location" vertex="1">
+          <mxGeometry y="30" width="220" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_location_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_location" vertex="1">
+          <mxGeometry y="200" width="220" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_location_methods" value="+ getId(): String&#xa;+ getName(): String&#xa;+ getImageUrl(): String&#xa;+ getLatitude(): double&#xa;+ getLongitude(): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_location" vertex="1">
+          <mxGeometry y="208" width="220" height="72" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== LOCATION CATEGORY CLASS ==================== -->
+        <mxCell id="class_location_category" value="&lt;b&gt;LocationCategory&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#d5e8d4;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#82b366;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="700" y="500" width="200" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_location_category_attrs" value="- id: String&#xa;- name: String&#xa;- description: String&#xa;- icon: String&#xa;- image: String&#xa;- createdAt: Timestamp&#xa;- updatedAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_location_category" vertex="1">
+          <mxGeometry y="30" width="200" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_location_category_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_location_category" vertex="1">
+          <mxGeometry y="140" width="200" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_location_category_methods" value="+ getId(): String&#xa;+ getName(): String&#xa;+ getIcon(): String&#xa;+ getImage(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_location_category" vertex="1">
+          <mxGeometry y="148" width="200" height="52" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== REVIEW CLASS ==================== -->
+        <mxCell id="class_review" value="&lt;b&gt;Review&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#ffe6cc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#d79b00;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="80" y="400" width="200" height="230" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_review_attrs" value="- id: String&#xa;- userId: String&#xa;- activityId: String&#xa;- locationId: String&#xa;- userName: String&#xa;- description: String&#xa;- rating: float&#xa;- createdAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_review" vertex="1">
+          <mxGeometry y="30" width="200" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_review_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_review" vertex="1">
+          <mxGeometry y="160" width="200" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_review_methods" value="+ getId(): String&#xa;+ getUserId(): String&#xa;+ getRating(): float&#xa;+ getDescription(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_review" vertex="1">
+          <mxGeometry y="168" width="200" height="62" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== TOUR GUIDE REQUEST CLASS ==================== -->
+        <mxCell id="class_tour_guide_request" value="&lt;b&gt;TourGuideRequest&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#f8cecc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#b85450;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1000" y="100" width="200" height="260" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_tour_guide_request_attrs" value="- id: String&#xa;- fullName: String&#xa;- email: String&#xa;- phone: String&#xa;- regions: String[]&#xa;- bio: String&#xa;- idCardUrl: String&#xa;- status: String&#xa;- active: boolean&#xa;- createdAt: Timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_tour_guide_request" vertex="1">
+          <mxGeometry y="30" width="200" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_tour_guide_request_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_tour_guide_request" vertex="1">
+          <mxGeometry y="190" width="200" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_tour_guide_request_methods" value="+ getId(): String&#xa;+ getFullName(): String&#xa;+ getStatus(): String&#xa;+ isActive(): boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_tour_guide_request" vertex="1">
+          <mxGeometry y="198" width="200" height="62" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== ACTIVITY USER CLASS ==================== -->
+        <mxCell id="class_activity_user" value="&lt;b&gt;ActivityUser&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#e1d5e7;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#9673a6;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1000" y="420" width="200" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_user_attrs" value="- id: String&#xa;- userIds: List&lt;String&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_activity_user" vertex="1">
+          <mxGeometry y="30" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_user_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_activity_user" vertex="1">
+          <mxGeometry y="80" width="200" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_activity_user_methods" value="+ getId(): String&#xa;+ getUserIds(): List&lt;String&gt;&#xa;+ setUserIds(ids: List&lt;String&gt;): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_activity_user" vertex="1">
+          <mxGeometry y="88" width="200" height="62" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== POI CLASS ==================== -->
+        <mxCell id="class_poi" value="&lt;b&gt;POI&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#fff2cc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;strokeColor=#d6b656;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1000" y="620" width="200" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_poi_attrs" value="- name: String&#xa;- location: GeoPoint&#xa;- activities: List&lt;String&gt;&#xa;- locationTypes: List&lt;String&gt;&#xa;- description: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="class_poi" vertex="1">
+          <mxGeometry y="30" width="200" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_poi_sep" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="class_poi" vertex="1">
+          <mxGeometry y="120" width="200" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="class_poi_methods" value="+ getName(): String&#xa;+ getLocation(): GeoPoint&#xa;+ getActivities(): List&lt;String&gt;&#xa;+ getLocationTypes(): List&lt;String&gt;&#xa;+ getDescription(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" parent="class_poi" vertex="1">
+          <mxGeometry y="128" width="200" height="72" as="geometry"/>
+        </mxCell>
+        
+        <!-- ==================== RELATIONSHIPS ==================== -->
+        
+        <!-- User creates Activity (1 to *) -->
+        <mxCell id="rel_user_activity" value="" style="endArrow=open;endFill=0;endSize=12;html=1;strokeWidth=2;strokeColor=#333333;" parent="1" source="class_user" target="class_activity" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="200" as="sourcePoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_user_activity_label" value="creates&#xa;1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=0;labelBackgroundColor=#FFFFFF;" parent="rel_user_activity" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" relative="1" as="geometry">
+            <mxPoint y="-15" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Activity has ActivityType (* to 1) -->
+        <mxCell id="rel_activity_type" value="" style="endArrow=diamondThin;endFill=1;endSize=12;html=1;strokeWidth=2;strokeColor=#333333;" parent="1" source="class_activity" target="class_activity_type" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rel_activity_type_label" value="has&#xa;*..*1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=0;labelBackgroundColor=#FFFFFF;" parent="rel_activity_type" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" relative="1" as="geometry">
+            <mxPoint y="-15" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Activity at Location (* to 1) -->
+        <mxCell id="rel_activity_location" value="" style="endArrow=diamondThin;endFill=1;endSize=12;html=1;strokeWidth=2;strokeColor=#333333;" parent="1" source="class_activity" target="class_location" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rel_activity_location_label" value="at&#xa;*..*1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=0;labelBackgroundColor=#FFFFFF;" parent="rel_activity_location" vertex="1" connectable="0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="15" y="-5" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Location belongs to LocationCategory (* to 1) -->
+        <mxCell id="rel_location_category" value="" style="endArrow=diamondThin;endFill=1;endSize=12;html=1;strokeWidth=2;strokeColor=#333333;" parent="1" source="class_location" target="class_location_category" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rel_location_category_label" value="belongs to&#xa;*..*1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=0;labelBackgroundColor=#FFFFFF;" parent="rel_location_category" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" relative="1" as="geometry">
+            <mxPoint y="-15" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- User writes Review (1 to *) -->
+        <mxCell id="rel_user_review" value="" style="endArrow=open;endFill=0;endSize=12;html=1;strokeWidth=2;strokeColor=#333333;" parent="1" source="class_user" target="class_review" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rel_user_review_label" value="writes&#xa;1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=0;labelBackgroundColor=#FFFFFF;" parent="rel_user_review" vertex="1" connectable="0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="15" y="-5" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Review for Activity (* to 1) -->
+        <mxCell id="rel_review_activity" value="" style="endArrow=open;endFill=0;endSize=12;html=1;strokeWidth=2;strokeColor=#333333;dashed=1;" parent="1" source="class_review" target="class_activity" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="500"/>
+              <mxPoint x="310" y="360"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_review_activity_label" value="for&#xa;*..*1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=0;labelBackgroundColor=#FFFFFF;" parent="rel_review_activity" vertex="1" connectable="0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-20" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Review for Location (* to 1) -->
+        <mxCell id="rel_review_location" value="" style="endArrow=open;endFill=0;endSize=12;html=1;strokeWidth=2;strokeColor=#333333;dashed=1;" parent="1" source="class_review" target="class_location" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rel_review_location_label" value="for&#xa;*..*1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=0;labelBackgroundColor=#FFFFFF;" parent="rel_review_location" vertex="1" connectable="0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-15" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- User participates in Activity (M:N via ActivityUser) -->
+        <mxCell id="rel_user_activityuser" value="" style="endArrow=open;endFill=0;endSize=12;html=1;strokeWidth=2;strokeColor=#9673a6;dashed=1;" parent="1" source="class_user" target="class_activity_user" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="380"/>
+              <mxPoint x="1100" y="380"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_user_activityuser_label" value="participates&#xa;*..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=0;labelBackgroundColor=#FFFFFF;" parent="rel_user_activityuser" vertex="1" connectable="0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-15" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- ==================== LEGEND ==================== -->
+        <mxCell id="legend_box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fillOpacity=95;" parent="1" vertex="1">
+          <mxGeometry x="1280" y="100" width="300" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_title" value="LEGEND" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="1380" y="105" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_entity" value="Entity" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=20;fillColor=#dae8fc;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=0;strokeColor=#6c8ebf;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1295" y="135" width="70" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_entity_attr" value="- attribute" style="text;strokeColor=none;fillColor=none;align=left;fontSize=8;spacingLeft=4;" parent="legend_entity" vertex="1">
+          <mxGeometry y="20" width="70" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_entity_text" value="Core Entity Class" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1375" y="145" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_category" value="Category" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=20;fillColor=#d5e8d4;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=0;strokeColor=#82b366;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1295" y="190" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_category_attr" value="" style="text;strokeColor=none;fillColor=none;align=left;fontSize=8;spacingLeft=4;" parent="legend_category" vertex="1">
+          <mxGeometry y="20" width="70" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_category_text" value="Lookup/Category" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1375" y="195" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_junction" value="Junction" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=20;fillColor=#e1d5e7;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=0;strokeColor=#9673a6;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1295" y="235" width="70" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_junction_attr" value="" style="text;strokeColor=none;fillColor=none;align=left;fontSize=8;spacingLeft=4;" parent="legend_junction" vertex="1">
+          <mxGeometry y="20" width="70" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_junction_text" value="M:N Junction" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1375" y="240" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_arrow1" value="" style="endArrow=open;endFill=0;endSize=10;html=1;strokeWidth=2;strokeColor=#333333;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1485" y="155" as="sourcePoint"/>
+            <mxPoint x="1555" y="155" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_arrow1_text" value="Association" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1485" y="160" width="80" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_arrow2" value="" style="endArrow=diamondThin;endFill=1;endSize=10;html=1;strokeWidth=2;strokeColor=#333333;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1485" y="200" as="sourcePoint"/>
+            <mxPoint x="1555" y="200" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_arrow2_text" value="Composition" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1485" y="205" width="80" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_arrow3" value="" style="endArrow=open;endFill=0;endSize=10;html=1;strokeWidth=2;strokeColor=#333333;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1485" y="245" as="sourcePoint"/>
+            <mxPoint x="1555" y="245" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_arrow3_text" value="Dependency" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1485" y="250" width="80" height="20" as="geometry"/>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
