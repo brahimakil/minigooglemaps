@@ -64,17 +64,19 @@ export default function EditActivity() {
         setType(activityData.type || '');
 
         // Fetch tour guides from tourGuideRequests collection
+        // Using single where clause to avoid composite index requirement
         const tourGuidesQuery = query(
           collection(db, 'tourGuideRequests'),
-          where('status', '==', 'approved'),
-          where('active', '!=', false)
+          where('status', '==', 'approved')
         );
 
         const tourGuidesSnapshot = await getDocs(tourGuidesQuery);
-        const tourGuidesData = tourGuidesSnapshot.docs.map(doc => ({
-          id: doc.id,
-          name: doc.data().fullName || 'Unknown Guide'
-        }));
+        const tourGuidesData = tourGuidesSnapshot.docs
+          .filter(doc => doc.data().active !== false) // Filter in JS instead of Firebase
+          .map(doc => ({
+            id: doc.id,
+            name: doc.data().fullName || 'Unknown Guide'
+          }));
         setAvailableTourGuides(tourGuidesData);
 
         // Fetch assigned tour guides for this activity
