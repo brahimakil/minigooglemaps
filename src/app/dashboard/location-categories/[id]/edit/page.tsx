@@ -1,19 +1,14 @@
 'use client';
 
 import { useState, useEffect, FormEvent, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { MapPinIcon } from '@/components/icons';
 
-interface LocationCategoryEditProps {
-  params: {
-    id: string;
-  };
-}
-
-export default function EditLocationCategory({ params }: LocationCategoryEditProps) {
-  const { id } = params;
+export default function EditLocationCategory() {
+  const params = useParams();
+  const id = params.id as string;
   const router = useRouter();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -31,7 +26,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
       try {
         const docRef = doc(db, 'locationCategories', id);
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
           const data = docSnap.data();
           setName(data.name || '');
@@ -49,7 +44,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
         setLoading(false);
       }
     }
-    
+
     fetchLocationCategory();
   }, [id]);
 
@@ -57,7 +52,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImage(file);
-      
+
       // Create a preview
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -72,17 +67,17 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!name) {
       setError('Name is required');
       return;
     }
-    
+
     setSaving(true);
-    
+
     try {
       let imageUrl = currentImage;
-      
+
       // Upload new image if selected
       if (image) {
         // Convert image to base64 for storage in Firestore
@@ -99,12 +94,12 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
           reader.readAsDataURL(image);
         });
       }
-      
+
       // Check if the base64 string is too large (Firestore has a 1MB document limit)
       if (imageUrl && imageUrl.length > 900000) {
         throw new Error('Image is too large. Please use a smaller image or compress it first.');
       }
-      
+
       // Direct Firestore update instead of API call
       const categoryRef = doc(db, 'locationCategories', id);
       await updateDoc(categoryRef, {
@@ -114,7 +109,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
         ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
         updatedAt: serverTimestamp()
       });
-      
+
       router.push('/dashboard/location-categories');
     } catch (err) {
       console.error('Error updating location category:', err);
@@ -142,7 +137,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
           </h2>
         </div>
       </div>
-      
+
       <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
         {error && (
           <div className="p-4 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-500">
@@ -158,7 +153,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
             </div>
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="grid grid-cols-1 gap-6">
             <div>
@@ -174,7 +169,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
                 className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
               />
             </div>
-            
+
             <div>
               <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Description
@@ -188,7 +183,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
                 className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
               />
             </div>
-            
+
             <div>
               <label htmlFor="icon" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Icon (CSS class)
@@ -208,7 +203,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
                 />
               </div>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Image
@@ -257,7 +252,7 @@ export default function EditLocationCategory({ params }: LocationCategoryEditPro
               </div>
             </div>
           </div>
-          
+
           <div className="mt-6 flex items-center justify-end">
             <button
               type="button"

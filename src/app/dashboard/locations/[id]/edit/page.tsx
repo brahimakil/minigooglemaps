@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { doc, getDoc, updateDoc, serverTimestamp, collection, getDocs, query } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
 import { MapPinIcon } from '@/components/icons';
@@ -23,14 +23,9 @@ interface LocationCategory {
   name: string;
 }
 
-interface LocationEditProps {
-  params: {
-    id: string;
-  };
-}
-
-export default function EditLocation({ params }: LocationEditProps) {
-  const { id } = params;
+export default function EditLocation() {
+  const params = useParams();
+  const id = params.id as string;
   const router = useRouter();
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
@@ -54,7 +49,7 @@ export default function EditLocation({ params }: LocationEditProps) {
       try {
         const docRef = doc(db, 'locations', id);
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
           const data = docSnap.data();
           setName(data.name || '');
@@ -76,7 +71,7 @@ export default function EditLocation({ params }: LocationEditProps) {
         setLoading(false);
       }
     }
-    
+
     async function fetchCategories() {
       try {
         const categoriesQuery = query(collection(db, 'locationCategories'));
@@ -85,7 +80,7 @@ export default function EditLocation({ params }: LocationEditProps) {
           id: doc.id,
           name: doc.data().name
         }));
-        
+
         setCategories(categoriesData);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -93,7 +88,7 @@ export default function EditLocation({ params }: LocationEditProps) {
         setLoadingCategories(false);
       }
     }
-    
+
     fetchLocation();
     fetchCategories();
   }, [id]);
@@ -102,7 +97,7 @@ export default function EditLocation({ params }: LocationEditProps) {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImage(file);
-      
+
       // Create a preview
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -135,17 +130,17 @@ export default function EditLocation({ params }: LocationEditProps) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!name) {
       setError('Name is required');
       return;
     }
-    
+
     setSaving(true);
-    
+
     try {
       let imageUrl = currentImage;
-      
+
       if (image) {
         // Convert image to base64 for storage in Firestore
         imageUrl = await new Promise<string>((resolve, reject) => {
@@ -161,7 +156,7 @@ export default function EditLocation({ params }: LocationEditProps) {
           reader.readAsDataURL(image);
         });
       }
-      
+
       // Direct Firestore update instead of API call
       const locationRef = doc(db, 'locations', id);
       await updateDoc(locationRef, {
@@ -175,7 +170,7 @@ export default function EditLocation({ params }: LocationEditProps) {
         media: media,
         updatedAt: serverTimestamp()
       });
-      
+
       router.push('/dashboard/locations');
     } catch (err) {
       console.error('Error updating location:', err);
@@ -203,13 +198,13 @@ export default function EditLocation({ params }: LocationEditProps) {
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Edit Location</h1>
-        
+
         {error && (
           <div className="mb-4 p-4 text-sm text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-100 rounded-md">
             {error}
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
           <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
             <div className="sm:col-span-6">
@@ -227,7 +222,7 @@ export default function EditLocation({ params }: LocationEditProps) {
                 />
               </div>
             </div>
-            
+
             <div className="sm:col-span-6">
               <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Address
@@ -242,7 +237,7 @@ export default function EditLocation({ params }: LocationEditProps) {
                 />
               </div>
             </div>
-            
+
             <div className="sm:col-span-6">
               <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Category
@@ -263,7 +258,7 @@ export default function EditLocation({ params }: LocationEditProps) {
                 </select>
               </div>
             </div>
-            
+
             <div className="sm:col-span-6">
               <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Description
@@ -278,7 +273,7 @@ export default function EditLocation({ params }: LocationEditProps) {
                 />
               </div>
             </div>
-            
+
             <div className="col-span-6">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Main Image
@@ -320,14 +315,14 @@ export default function EditLocation({ params }: LocationEditProps) {
                 />
               </div>
             </div>
-            
+
             <div className="col-span-6">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Additional Media
               </label>
               <MediaUploader existingMedia={media} onMediaChange={handleMediaChange} />
             </div>
-            
+
             <div className="col-span-6">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Location on Map
@@ -349,7 +344,7 @@ export default function EditLocation({ params }: LocationEditProps) {
               </p>
             </div>
           </div>
-          
+
           <div className="mt-6 flex items-center justify-end">
             <button
               type="button"

@@ -1,20 +1,15 @@
 'use client';
 
 import { useState, useEffect, FormEvent, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebase/config';
 import { TagIcon } from '@/components/icons';
 
-interface ActivityTypeEditProps {
-  params: {
-    id: string;
-  };
-}
-
-export default function EditActivityType({ params }: ActivityTypeEditProps) {
-  const { id } = params;
+export default function EditActivityType() {
+  const params = useParams();
+  const id = params.id as string;
   const router = useRouter();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -47,7 +42,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
         setLoading(false);
       }
     }
-    
+
     fetchActivityType();
   }, [id]);
 
@@ -55,7 +50,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImage(file);
-      
+
       // Create a preview
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -70,17 +65,17 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!name) {
       setError('Name is required');
       return;
     }
-    
+
     setSaving(true);
-    
+
     try {
       let imageUrl = currentImage;
-      
+
       // Upload new image if selected
       if (image) {
         // Convert image to base64 for storage in Firestore
@@ -94,7 +89,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
           reader.readAsDataURL(image);
         });
       }
-      
+
       // Direct Firestore update instead of API call
       const activityTypeRef = doc(db, 'activityTypes', id);
       await updateDoc(activityTypeRef, {
@@ -104,7 +99,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
         ...(imageUrl !== currentImage ? { image: imageUrl } : {}),
         updatedAt: serverTimestamp()
       });
-      
+
       router.push('/dashboard/activity-types');
     } catch (err) {
       console.error('Error updating activity type:', err);
@@ -132,7 +127,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
           </h2>
         </div>
       </div>
-      
+
       {error && (
         <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4 mb-6">
           <div className="flex">
@@ -149,7 +144,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
           </div>
         </div>
       )}
-      
+
       <div>
         <form onSubmit={handleSubmit}>
           <div className="bg-white dark:bg-gray-800 shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-6">
@@ -175,7 +170,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
                       className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
                     />
                   </div>
-                  
+
                   <div className="col-span-6">
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                       Description
@@ -189,7 +184,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
                       className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
                     />
                   </div>
-                  
+
                   <div className="col-span-6">
                     <label htmlFor="icon" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                       Icon (CSS class or emoji)
@@ -208,7 +203,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white dark:bg-gray-800 shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-6">
             <div className="md:grid md:grid-cols-3 md:gap-6">
               <div className="md:col-span-1">
@@ -239,7 +234,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
                     </span>
                   )}
                 </div>
-                
+
                 {(imagePreview || currentImage) && (
                   <div className="mt-4">
                     <img
@@ -252,7 +247,7 @@ export default function EditActivityType({ params }: ActivityTypeEditProps) {
               </div>
             </div>
           </div>
-          
+
           <div className="flex justify-end">
             <button
               type="button"
