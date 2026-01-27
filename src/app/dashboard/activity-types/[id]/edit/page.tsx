@@ -9,7 +9,7 @@ import { TagIcon } from '@/components/icons';
 
 export default function EditActivityType() {
   const params = useParams();
-  const id = params.id as string;
+  const id = params?.id as string;
   const router = useRouter();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -23,6 +23,8 @@ export default function EditActivityType() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (!id) return;
+
     async function fetchActivityType() {
       try {
         const activityTypeDoc = await getDoc(doc(db, 'activityTypes', id));

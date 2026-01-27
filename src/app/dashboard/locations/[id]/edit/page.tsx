@@ -25,7 +25,7 @@ interface LocationCategory {
 
 export default function EditLocation() {
   const params = useParams();
-  const id = params.id as string;
+  const id = params?.id as string;
   const router = useRouter();
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
@@ -45,6 +45,8 @@ export default function EditLocation() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (!id) return;
+
     async function fetchLocation() {
       try {
         const docRef = doc(db, 'locations', id);

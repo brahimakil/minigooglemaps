@@ -8,7 +8,7 @@ import { MapPinIcon } from '@/components/icons';
 
 export default function EditLocationCategory() {
   const params = useParams();
-  const id = params.id as string;
+  const id = params?.id as string;
   const router = useRouter();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -22,6 +22,8 @@ export default function EditLocationCategory() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (!id) return;
+
     async function fetchLocationCategory() {
       try {
         const docRef = doc(db, 'locationCategories', id);
