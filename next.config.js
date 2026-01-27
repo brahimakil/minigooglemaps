@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    outputFileTracingIgnores: ['**/.git/**', '**/node_modules/**'],
+    outputFileTracingIgnores: ['**/.git/**'],
   },
   images: {
     domains: [
@@ -19,4 +19,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig; 
+module.exports = nextConfig;
