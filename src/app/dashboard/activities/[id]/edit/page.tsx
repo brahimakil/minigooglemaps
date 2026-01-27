@@ -25,8 +25,8 @@ interface Activity {
 export default function EditActivity() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
-  
+  const id = params?.id as string;
+
   // Activity state
   const [activity, setActivity] = useState<Activity | null>(null);
   const [name, setName] = useState('');
@@ -36,12 +36,14 @@ export default function EditActivity() {
   const [type, setType] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Tour guide state
   const [availableTourGuides, setAvailableTourGuides] = useState<{ id: string; name: string }[]>([]);
   const [selectedTourGuides, setSelectedTourGuides] = useState<string[]>([]);
 
   useEffect(() => {
+    if (!id) return;
+
     const fetchData = async () => {
       try {
         // Fetch activity data
@@ -50,24 +52,24 @@ export default function EditActivity() {
           setError('Activity not found');
           return;
         }
-        
+
         const activityData = { id: activityDoc.id, ...activityDoc.data() } as Activity;
         setActivity(activityData);
-        
+
         // Set form state
         setName(activityData.name || '');
         setDescription(activityData.description || '');
         setPrice(activityData.price ? activityData.price.toString() : '');
         setStatus(activityData.status || 'active');
         setType(activityData.type || '');
-        
+
         // Fetch tour guides from tourGuideRequests collection
         const tourGuidesQuery = query(
           collection(db, 'tourGuideRequests'),
           where('status', '==', 'approved'),
           where('active', '!=', false)
         );
-        
+
         const tourGuidesSnapshot = await getDocs(tourGuidesQuery);
         const tourGuidesData = tourGuidesSnapshot.docs.map(doc => ({
           id: doc.id,
@@ -88,20 +90,18 @@ export default function EditActivity() {
       }
     };
 
-    if (id) {
-      fetchData();
-    }
+    fetchData();
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!name) {
       setError('Name is required');
       return;
     }
-    
+
     try {
       // Update activity
       await updateDoc(doc(db, 'activities', id), {
@@ -112,13 +112,13 @@ export default function EditActivity() {
         type,
         updatedAt: serverTimestamp()
       });
-      
+
       // Update tour guide assignments
       await setDoc(doc(db, 'activityGuides', id), {
         guideIds: selectedTourGuides,
         updatedAt: serverTimestamp()
       });
-      
+
       router.push('/dashboard/activities');
     } catch (err) {
       console.error('Error updating activity:', err);
@@ -127,9 +127,9 @@ export default function EditActivity() {
   };
 
   const handleTourGuideChange = (guideId: string) => {
-    setSelectedTourGuides(prev => 
+    setSelectedTourGuides(prev =>
       prev.includes(guideId)
-        ? prev.filter(id => id !== guideId)
+        ? prev.filter(gid => gid !== guideId)
         : [...prev, guideId]
     );
   };
@@ -145,7 +145,7 @@ export default function EditActivity() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Edit Activity</h1>
-      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
@@ -157,7 +157,7 @@ export default function EditActivity() {
             required
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
           <textarea
@@ -167,7 +167,7 @@ export default function EditActivity() {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700"
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
           <input
@@ -177,7 +177,7 @@ export default function EditActivity() {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700"
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
           <select
@@ -189,7 +189,7 @@ export default function EditActivity() {
             <option value="inactive">Inactive</option>
           </select>
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Type</label>
           <input
@@ -199,7 +199,7 @@ export default function EditActivity() {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700"
           />
         </div>
-        
+
         <div>
           <h3 className="text-lg font-medium mb-2">Assign Tour Guides</h3>
           {availableTourGuides.length === 0 ? (
@@ -223,7 +223,7 @@ export default function EditActivity() {
             </div>
           )}
         </div>
-        
+
         <div className="flex justify-end space-x-3">
           <button
             type="button"
