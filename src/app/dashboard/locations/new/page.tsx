@@ -262,8 +262,8 @@ export default function NewLocation() {
               <div className="mt-5 md:mt-0 md:col-span-2">
                 <div className="h-[500px] w-full">
                   <LocationPicker
-                    initialLat={33.8938}
-                    initialLng={35.5018}
+                    initialLat={latitude}
+                    initialLng={longitude}
                     onLocationSelect={handleLocationSelect}
                   />
                 </div>
