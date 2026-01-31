@@ -3,16 +3,17 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs, query, where, orderBy, limit, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase/config';
-import { 
-  ChartBarIcon, 
-  UsersIcon, 
-  CalendarIcon, 
-  ActivityIcon, 
-  TagIcon, 
+import {
+  ChartBarIcon,
+  UsersIcon,
+  CalendarIcon,
+  ActivityIcon,
+  TagIcon,
   MapPinIcon,
   TrendingUpIcon,
   ClockIcon,
-  UserIcon
+  UserIcon,
+  MapIcon
 } from '@/components/icons';
 import dynamic from 'next/dynamic';
 
@@ -94,6 +95,7 @@ export default function StatisticsPage() {
   const [userActivitiesData, setUserActivitiesData] = useState<UserActivityData[]>([]);
   const [totalAssignments, setTotalAssignments] = useState(0);
   const [avgUsersPerActivity, setAvgUsersPerActivity] = useState(0);
+  const [trackCount, setTrackCount] = useState(0);
 
   useEffect(() => {
     async function fetchStatistics() {
@@ -107,10 +109,12 @@ export default function StatisticsPage() {
         const usersSnapshot = await getDocs(collection(db, 'appUsers'));
         const locationsSnapshot = await getDocs(collection(db, 'locations'));
         const activityTypesSnapshot = await getDocs(collection(db, 'activityTypes'));
-        
+        const tracksSnapshot = await getDocs(collection(db, 'tracks'));
+
         setUserCount(usersSnapshot.size);
         setLocationCount(locationsSnapshot.size);
         setActivityTypeCount(activityTypesSnapshot.size);
+        setTrackCount(tracksSnapshot.size);
         
         // Process activities data
         const activities: ActivityData[] = [];
@@ -362,7 +366,7 @@ export default function StatisticsPage() {
       </div>
       
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
           <div className="p-5">
             <div className="flex items-center">
@@ -465,8 +469,33 @@ export default function StatisticsPage() {
             </div>
           </div>
         </div>
+
+        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <MapIcon className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Total Tracks</dt>
+                  <dd>
+                    <div className="text-lg font-medium text-gray-900 dark:text-white">{trackCount}</div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gray-50 dark:bg-gray-700 px-5 py-3">
+            <div className="text-sm">
+              <span className="font-medium text-orange-600 dark:text-orange-400">
+                {trackCount > 0 ? `${trackCount} tour tracks` : 'No tracks'}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-      
+
       {/* Activity Timeline */}
       <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
