@@ -22,7 +22,7 @@ export default function Dashboard() {
     users: 0,
     activities: 0,
     locations: 0,
-    activityTypes: 0,
+    tracks: 0,
   });
   const [recentActivities, setRecentActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,13 +34,13 @@ export default function Dashboard() {
         const appUsersSnapshot = await getCountFromServer(collection(db, 'appUsers'));
         const activitiesSnapshot = await getCountFromServer(collection(db, 'activities'));
         const locationsSnapshot = await getCountFromServer(collection(db, 'locations'));
-        const activityTypesSnapshot = await getCountFromServer(collection(db, 'activityTypes'));
+        const tracksSnapshot = await getCountFromServer(collection(db, 'tracks'));
 
         setStats({
           users: appUsersSnapshot.data().count,
           activities: activitiesSnapshot.data().count,
           locations: locationsSnapshot.data().count,
-          activityTypes: activityTypesSnapshot.data().count,
+          tracks: tracksSnapshot.data().count,
         });
 
         // Fetch recent activities
@@ -152,13 +152,13 @@ export default function Dashboard() {
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <TagIcon className="h-6 w-6 text-gray-400" />
+                  <MapIcon className="h-6 w-6 text-gray-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Activity Types</dt>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Total Tracks</dt>
                     <dd>
-                      <div className="text-lg font-medium text-gray-900 dark:text-white">{stats.activityTypes}</div>
+                      <div className="text-lg font-medium text-gray-900 dark:text-white">{stats.tracks}</div>
                     </dd>
                   </dl>
                 </div>
@@ -166,7 +166,7 @@ export default function Dashboard() {
             </div>
             <div className="bg-gray-50 dark:bg-gray-700 px-5 py-3">
               <div className="text-sm">
-                <Link href="/dashboard/activity-types" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+                <Link href="/dashboard/tracks" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
                   View all
                 </Link>
               </div>
