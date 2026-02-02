@@ -392,6 +392,40 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
+        <!-- Admin Entity -->
+        <mxCell id="entity_admin" value="ADMIN" style="shape=rectangle;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="480" y="650" width="120" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Admin Attributes -->
+        <mxCell id="attr_admin_id" value="id" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=4;" parent="1" vertex="1">
+          <mxGeometry x="400" y="600" width="55" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_admin_id" style="edgeStyle=none;html=1;endArrow=none;" parent="1" source="attr_admin_id" target="entity_admin" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="attr_admin_email" value="email" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="470" y="600" width="60" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_admin_email" style="edgeStyle=none;html=1;endArrow=none;" parent="1" source="attr_admin_email" target="entity_admin" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="attr_admin_name" value="displayName" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="540" y="600" width="85" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_admin_name" style="edgeStyle=none;html=1;endArrow=none;" parent="1" source="attr_admin_name" target="entity_admin" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="attr_admin_created" value="createdAt" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="610" y="640" width="75" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_admin_created" style="edgeStyle=none;html=1;endArrow=none;" parent="1" source="attr_admin_created" target="entity_admin" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
         <!-- ActivityUser Attributes -->
         <mxCell id="attr_au_id" value="id" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=4;" parent="1" vertex="1">
           <mxGeometry x="280" y="180" width="55" height="30" as="geometry"/>
@@ -442,16 +476,7 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
-        <!-- creates (User - Activity): 1:N -->
-        <mxCell id="rel_creates_activity" value="creates" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" parent="1" vertex="1">
-          <mxGeometry x="280" y="80" width="100" height="50" as="geometry"/>
-        </mxCell>
-        <mxCell id="edge_user_creates" value="1" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="entity_user" target="rel_creates_activity" edge="1">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="edge_activity_creates" value="N" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="rel_creates_activity" target="entity_activity" edge="1">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
+        <!-- REMOVED: creates (User - Activity) - Users do NOT create activities, Admins do -->
         
         <!-- writes (User - Review): 1:N -->
         <mxCell id="rel_writes_review" value="writes" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" parent="1" vertex="1">
@@ -471,7 +496,7 @@
         <mxCell id="edge_review_for_activity" value="N" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="entity_review" target="rel_for_activity" edge="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="edge_activity_for" value="1" style="edgeStyle=none;html=1;endArrow=none;" parent="1" source="rel_for_activity" target="entity_location" edge="1">
+        <mxCell id="edge_activity_for" value="1" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="rel_for_activity" target="entity_activity" edge="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
@@ -480,6 +505,50 @@
           <mxGeometry x="290" y="285" width="110" height="50" as="geometry"/>
         </mxCell>
         <mxCell id="edge_au_participates" style="edgeStyle=none;html=1;endArrow=none;" parent="1" source="entity_activity_user" target="rel_participates" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- manages_activity (Admin - Activity): 1:N -->
+        <mxCell id="rel_manages_activity" value="manages" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="480" y="530" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_admin_manages_act" value="1" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="entity_admin" target="rel_manages_activity" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_act_manages" value="N" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="rel_manages_activity" target="entity_activity" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- manages_location (Admin - Location): 1:N -->
+        <mxCell id="rel_manages_location" value="manages" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="620" y="530" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_admin_manages_loc" value="1" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="entity_admin" target="rel_manages_location" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_loc_manages" value="N" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="rel_manages_location" target="entity_location" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- manages_activity_type (Admin - ActivityType): 1:N -->
+        <mxCell id="rel_manages_act_type" value="manages" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="880" y="170" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_admin_manages_type" value="1" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="entity_admin" target="rel_manages_act_type" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_type_manages" value="N" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="rel_manages_act_type" target="entity_activity_type" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- manages_location_category (Admin - LocationCategory): 1:N -->
+        <mxCell id="rel_manages_loc_cat" value="manages" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="880" y="530" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_admin_manages_cat" value="1" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="entity_admin" target="rel_manages_loc_cat" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_cat_manages" value="N" style="edgeStyle=none;html=1;endArrow=none;fontStyle=1;fontSize=12;" parent="1" source="rel_manages_loc_cat" target="entity_location_category" edge="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         

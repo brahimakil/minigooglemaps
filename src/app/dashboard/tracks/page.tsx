@@ -5,7 +5,7 @@ import { collection, query, orderBy, getDocs, doc, deleteDoc, where } from 'fire
 import { db } from '@/lib/firebase/config';
 import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
-import { PlusIcon, PencilIcon, TrashIcon } from '@/components/icons';
+import { PlusIcon, PencilIcon, TrashIcon, EyeIcon } from '@/components/icons';
 
 export const dynamic = 'force-dynamic';
 
@@ -258,6 +258,12 @@ export default function TracksPage() {
                             </span>
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                            <Link
+                              href={`/dashboard/tracks/${track.id}`}
+                              className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-4"
+                            >
+                              <EyeIcon className="h-4 w-4 inline" /> View
+                            </Link>
                             <Link
                               href={`/dashboard/tracks/${track.id}/edit`}
                               className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-4"
