@@ -15,6 +15,7 @@ interface TourGuide {
   regions: string[];
   bio: string;
   idCardUrl: string;
+  photoUrl?: string;
   status: 'approved';
   active?: boolean;
   createdAt: any;
@@ -162,11 +163,19 @@ export default function TourGuidesPage() {
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
                             <div className="flex items-center">
                               <div className="h-8 w-8 flex-shrink-0">
-                                <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
-                                  <span className="text-xs font-medium text-indigo-600 dark:text-indigo-300">
-                                    {guide.fullName.charAt(0)}
-                                  </span>
-                                </div>
+                                {guide.photoUrl ? (
+                                  <SafeImage
+                                    src={guide.photoUrl}
+                                    alt={guide.fullName}
+                                    className="h-8 w-8 rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                                    <span className="text-xs font-medium text-indigo-600 dark:text-indigo-300">
+                                      {guide.fullName.charAt(0)}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                               <div className="ml-3">{guide.fullName}</div>
                             </div>
@@ -266,11 +275,19 @@ export default function TourGuidesPage() {
                     <div className="mt-4">
                       <div className="flex items-center mb-6">
                         <div className="h-16 w-16 flex-shrink-0 mr-4">
-                          <div className="h-16 w-16 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
-                            <span className="text-2xl font-medium text-indigo-600 dark:text-indigo-300">
-                              {viewingGuide.fullName.charAt(0)}
-                            </span>
-                          </div>
+                          {viewingGuide.photoUrl ? (
+                            <SafeImage
+                              src={viewingGuide.photoUrl}
+                              alt={viewingGuide.fullName}
+                              className="h-16 w-16 rounded-full object-cover border-2 border-indigo-500"
+                            />
+                          ) : (
+                            <div className="h-16 w-16 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                              <span className="text-2xl font-medium text-indigo-600 dark:text-indigo-300">
+                                {viewingGuide.fullName.charAt(0)}
+                              </span>
+                            </div>
+                          )}
                         </div>
                         <div>
                           <h4 className="text-xl font-medium text-gray-900 dark:text-white">

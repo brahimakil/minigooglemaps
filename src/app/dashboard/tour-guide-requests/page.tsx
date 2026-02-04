@@ -14,6 +14,7 @@ interface TourGuideRequest {
   regions: string[];
   bio: string;
   idCardUrl: string;
+  photoUrl?: string;
   status: 'pending' | 'approved' | 'rejected';
   createdAt: any;
 }
@@ -285,6 +286,23 @@ export default function TourGuideRequestsPage() {
                   
                   {viewingRequest && (
                     <div className="mt-4 space-y-4">
+                      {/* Profile Photo */}
+                      <div className="flex justify-center mb-4">
+                        {viewingRequest.photoUrl ? (
+                          <SafeImage
+                            src={viewingRequest.photoUrl}
+                            alt={viewingRequest.fullName}
+                            className="h-24 w-24 rounded-full object-cover border-4 border-indigo-500"
+                          />
+                        ) : (
+                          <div className="h-24 w-24 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center border-4 border-indigo-500">
+                            <span className="text-3xl font-medium text-indigo-600 dark:text-indigo-300">
+                              {viewingRequest.fullName.charAt(0)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Name</h4>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">{viewingRequest.fullName}</p>
